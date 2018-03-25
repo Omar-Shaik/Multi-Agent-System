@@ -39,7 +39,7 @@ class Body(Object):
         return self.controller
 
     # Move 1 unit in the given direction, if valid
-    def move(self, movement, x_dif, y_dif):
+    def move(self, movement):
         validity = self.env.validPosition(self.x_pos + movement[0], self.y_pos + movement[1])
 
         if(validity):
