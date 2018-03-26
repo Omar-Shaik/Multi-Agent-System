@@ -14,4 +14,6 @@ class Agent:
         channel.send_message(self, message)
         
     def readNewMessage(self):
-        #need to start reading new messages from last seen message
+        for i in self.new_messages:
+            #read message
+        self.new_messages.del(i)
