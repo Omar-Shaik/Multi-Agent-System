@@ -1,5 +1,5 @@
 import math
-import CommunicationChannel as cc
+import Communication as c
 class Environment:
 
     #Create new environment with the given bounds
@@ -9,7 +9,7 @@ class Environment:
         self.y_lower = y_lower
         self.y_upper = y_upper
         self.objects = []
-        self.public_channel = cc(0) #for some reason this isn't working
+        self.public_channel = c.CommunicationChannel(0) #for some reason this isn't working
 
 
 
