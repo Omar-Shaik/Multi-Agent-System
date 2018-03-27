@@ -1,5 +1,5 @@
 import math
-import Communication as c
+import Communication as com
 class Environment:
 
     #Create new environment with the given bounds
@@ -9,14 +9,16 @@ class Environment:
         self.y_lower = y_lower
         self.y_upper = y_upper
         self.objects = []
-        self.public_channel = c.CommunicationChannel(0) #for some reason this isn't working
+        self.public_channel = com.CommunicationChannel(0)
 
-
-
-    #Registers an object in the environment
-    #Uses the validPosition function
+    '''
+    Registers an object in the environment.
+    Uses the validPosition function.
+    Returns True if registration is successful.
+    Returns False if registration is unsuccessful.
+    '''
     def registerObject(self, object):
-        if self.validPosition(object.x_pos, object.y_pos):
+        if self.validPosition(object.position[0], object.position[1]):
             self.objects.append(object)
             return True
         else:
@@ -44,19 +46,16 @@ class Environment:
                 if (object.x_pos == x and object.y_pos == y) or (object.object_type == 1 and math.sqrt((object.x_pos - x)**2 + (object.y_pos - y)**2)) < 20:
                     validity = False
         return validity
-
-
-    #Find a way to combine the bottom two functions. Need to look at other classes.
     
-    #Get a list of elements visible from the given coordinates
-    def objectsAround(self, controller):
+    '''
+    Returns a list of elements visible to the body.
+    Removes targets same target type as the body from the environment.
+    '''
+    def scanner(self, body):
         visible = []
         for object in self.objects:
-            if math.sqrt((controller.body.x_pos - object.x_pos)**2 + (controller.body.y_pos - object.y_pos)**2 ) <= 10 and object.getObjecType() == 0:
+            if math.sqrt((body.position[0] - object.position[0])**2 + (body.position[1] - object.position[1])**2 ) <= 10 and object.object_type == 0:
                 visible.append(object)
+            if object.target_type == body.target_type: 
+                self.objects.remove(target)
         return visible
-    
-    #Removes the target from the environment if the target is within range of the controller
-    def pickUp(self, controller, target):
-        if target in self.objects and controller.body.target_type == target.target_type:
-            self.objects.remove(target)
