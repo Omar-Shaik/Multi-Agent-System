@@ -27,7 +27,6 @@ class Environment:
     '''
     Function checks if proposed position is valid.
     Validity variable holds the validity of the position. Only changes if position is invalid.
-    Loop variable controls the entry of the loop for secondary verification.
     Avoids unneccessary entry if first condition makes the position invalid.
     First if statement checks if the position is in the bounds of the envrionment.
     Second if statement is a loop that compares the position of every object currently in the environment with the proposed position.
@@ -36,12 +35,9 @@ class Environment:
     '''
     def validPosition(self, object):
         validity = True
-        loop = True
-        if self.x_upper <= object.position[0] <= self.x_lower:
-            if self.y_upper <= object.position[1] <= self.y_lower:
-                validity = False
-                loop = False
-        if (loop):
+        if object.position[0] >= self.x_upper or object.position[0] <= self.x_lower or object.position[1] >= self.y_upper or object.position[1] <= self.y_lower:
+            validity = False
+        if (validity):
             for obj in self.objects: 
                 if (obj.postion[0] == object.position[0] and obj.position[1] == object.position[1]) or (obj.object_type == 1 and math.sqrt((obj.pos[0] - object.position[0])**2 + (obj.pos[1] - object.position[1])**2)) < 20:
                     validity = False
@@ -54,8 +50,8 @@ class Environment:
     def scanner(self, body):
         visible = []
         for object in self.objects:
-            if math.sqrt((body.position[0] - object.position[0])**2 + (body.position[1] - object.position[1])**2 ) <= 10 and object.object_type == 0:
+            if math.sqrt((body.position[0] - object.position[0])**2 + (body.position[1] - object.position[1])**2 ) <= 10:
                 visible.append(object)
             if object.target_type == body.target_type: 
-                self.objects.remove(target)
+                self.objects.remove(object)
         return visible
