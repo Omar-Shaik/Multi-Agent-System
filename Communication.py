@@ -18,6 +18,6 @@ class CommunicationChannel:
             # Adds message to message log
             self.message_log.append(message)
             # Sends message to all controllers in the access list except the sender
-            for controller in self.access_list:
-                if controller != sender:
-                    controller.new_messages.append(message)
+            for agent in self.access_list:
+                if agent != sender:
+                    agent.new_messages.append(message)
