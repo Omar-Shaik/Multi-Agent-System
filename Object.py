@@ -6,18 +6,11 @@ class Object:
     Target type associates agents with targets.
     '''
     def __init__(self, env, x, y, obj_type, tar_type):
-        self.x_pos = x
-        self.y_pos = y
+        self.position = [x, y]
         self.env = env
         self.object_type = obj_type
         self.target_type = tar_type
-
-    def getObjecType(self):
-        return self.object_type
-
-    def getTargetType(self):
-        return self.target_type
-    
+        
 
 class Target(Object):
 
@@ -40,9 +33,13 @@ class Body(Object):
 
     # Move 1 unit in the given direction, if valid
     def move(self, movement):
-        validity = self.env.validPosition(self.x_pos + movement[0], self.y_pos + movement[1])
+        validity = self.env.validPosition(self.position[0] + movement[0], self.position[1] + movement[1])
         if(validity):
-            self.x_pos += movement[0]
-            self.y_pos += movement[1]
+            self.position[0] += movement[0]
+            self.position[1] += movement[1]
         return validity
+    
+    def scan(self):
+        return self.env.objectsAround(self)
 
+       
