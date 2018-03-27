@@ -18,7 +18,7 @@ class Environment:
     Returns False if registration is unsuccessful.
     '''
     def registerObject(self, object):
-        if self.validPosition(object.position[0], object.position[1]):
+        if self.validPosition(object):
             self.objects.append(object)
             return True
         else:
