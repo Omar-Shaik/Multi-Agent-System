@@ -8,12 +8,12 @@ class CommunicationChannel:
 
     #Only the public channel can have unlimited accesssors added to it
     #Private channels between two agents can't have more accessors added to them
-    def add_access(self, accessor):
+    def addAccess(self, accessor):
         if (self.channel_type == 0 or len(self.access_list) < 2):
             self.access_list.append(accessor)
 
     #Each controller has a list of new messages
-    def send_message(self, sender, message):
+    def sendMessage(self, sender, message):
         if sender in self.access_list:
             # Adds message to message log
             self.message_log.append(message)
