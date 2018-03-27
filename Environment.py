@@ -37,12 +37,12 @@ class Environment:
     def validPosition(self, x, y):
         validity = True
         loop = True
-        if self.x_upper <= x <= self.x_lower: #Check in bounds
+        if self.x_upper <= x <= self.x_lower:
             if self.y_upper <= y <= self.y_lower:
                 validity = False
                 loop = False
         if (loop):
-            for object in self.objects: #Check unoccupied
+            for object in self.objects: 
                 if (object.x_pos == x and object.y_pos == y) or (object.object_type == 1 and math.sqrt((object.x_pos - x)**2 + (object.y_pos - y)**2)) < 20:
                     validity = False
         return validity
