@@ -34,22 +34,22 @@ class Environment:
     Third if statement within second checks if that position is currently occupied.
     Third if statement also makes sure that two agents don't get too close to one another. Their radars cannot overlap, meaning 20cm.
     '''
-    def validPosition(self, x, y):
+    def validPosition(self, object):
         validity = True
         loop = True
-        if self.x_upper <= x <= self.x_lower:
-            if self.y_upper <= y <= self.y_lower:
+        if self.x_upper <= object.position[0] <= self.x_lower:
+            if self.y_upper <= object.position[1] <= self.y_lower:
                 validity = False
                 loop = False
         if (loop):
-            for object in self.objects: 
-                if (object.x_pos == x and object.y_pos == y) or (object.object_type == 1 and math.sqrt((object.x_pos - x)**2 + (object.y_pos - y)**2)) < 20:
+            for obj in self.objects: 
+                if (obj.postion[0] == object.position[0] and obj.position[1] == object.position[1]) or (obj.object_type == 1 and math.sqrt((obj.pos[0] - object.position[0])**2 + (obj.pos[1] - object.position[1])**2)) < 20:
                     validity = False
         return validity
     
     '''
     Returns a list of elements visible to the body.
-    Removes targets same target type as the body from the environment.
+    Removes targets that have the same target type as the body from the environment.
     '''
     def scanner(self, body):
         visible = []
