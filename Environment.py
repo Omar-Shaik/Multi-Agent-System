@@ -45,6 +45,8 @@ class Environment:
         return validity
 
 
+    #Find a way to combine the bottom two functions. Need to look at other classes.
+    
     #Get a list of elements visible from the given coordinates
     def objectsAround(self, controller):
         visible = []
@@ -52,7 +54,8 @@ class Environment:
             if math.sqrt((controller.body.x_pos - object.x_pos)**2 + (controller.body.y_pos - object.y_pos)**2 ) <= 10 and object.getObjecType() == 0:
                 visible.append(object)
         return visible
-
+    
+    #Removes the target from the environment if the target is within range of the controller
     def pickUp(self, controller, target):
         if target in self.objects and controller.body.target_type == target.target_type:
             self.objects.remove(target)
