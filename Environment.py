@@ -45,7 +45,7 @@ class Environment:
     
     '''
     Returns a list of elements visible to the body.
-    Removes targets that have the same target type as the body from the environment.
+    Removes targets that have the same target type as the body from the environment if they are within radar range.
     '''
     def scanner(self, body):
         visible = []
