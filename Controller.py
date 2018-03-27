@@ -6,6 +6,7 @@ class Controller:
         self.down = [0, -1]
         self.left = [-1, 0]
         self.body = body
+        self.body.controller = self 
     
     def scanner(self):
         return self.body.env.objectsAround(self)
