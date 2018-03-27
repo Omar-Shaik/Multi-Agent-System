@@ -1,15 +1,15 @@
 class Object:
-
-    #Create new object at given position.
+    
+    '''
+    Initialization function initializes function at given position in given environment.
+    Object type 0 denotes a target. Object type 1 denotes a body.
+    Target type associates agents with targets.
+    '''
     def __init__(self, env, x, y, obj_type, tar_type):
         self.x_pos = x
         self.y_pos = y
         self.env = env
-
-        #Object type 0 denotes a target. Object type of 1 denotes a body
         self.object_type = obj_type
-
-        #Example of a target type can be A, as in Agent A tries to collect targets A
         self.target_type = tar_type
 
     def getObjecType(self):
@@ -17,18 +17,24 @@ class Object:
 
     def getTargetType(self):
         return self.target_type
-
+    
 
 class Target(Object):
 
-    #Assign target type to the target, i.e., the target that's trying to get it.
+    '''
+    This class just creates an object instance with a value of 0 for the object type.
+    This class is created more because a body class was created.
+    '''
     def __init__(self, env, x, y, type):
         super(Target, self).__init__(env, x, y, 0, type)
 
 
 class Body(Object):
 
-    #Assign controller to the body
+    '''
+    This class creates an object instance with a value of 1 for the object type.
+    It also has movement function, which targets don't have. I didn't want to give targets movement.
+    '''
     def __init__(self, env, x, y, type):
         super(Body, self).__init__(env, x, y, 1, type)
 
