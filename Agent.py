@@ -17,3 +17,6 @@ class Agent:
         for i in self.new_messages:
             #read message
         self.new_messages.del(i)
+        
+    def radarSensor(self):
+        self.controller.scan()
