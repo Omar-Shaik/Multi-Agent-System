@@ -51,7 +51,7 @@ class Environment:
         visible = []
         for object in self.objects:
             if math.sqrt((body.position[0] - object.position[0])**2 + (body.position[1] - object.position[1])**2 ) <= 10:
-                visible.append(object)
-            if object.target_type == body.target_type: 
+                visible.append(body)
+            if body.target_type == object.target_type: 
                 self.objects.remove(object)
         return visible
