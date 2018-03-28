@@ -23,7 +23,7 @@ class CommunicationChannel:
     A message is sent by specifying the sender and the message.
     Message is only sent if sender is in the access list.
     Message is added to the message log.
-    Message is added to the new messages list of every agent besides the sender in the access list.
+    Message is added to the new messages list of every agent in the access list besides the sender.
     '''
     def sendMessage(self, sender, message):
         if sender in self.access_list:
