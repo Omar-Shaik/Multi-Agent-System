@@ -1,30 +1,39 @@
 import math
+import random as ran
 import Communication as com
-class Environment:
+import Agent as agt
+import Object as obj
+import string as str
 
-    #Create new environment with the given bounds
+
+class Environment:
+    # Create new environment with the given bounds
     def __init__(self, x_upper, x_lower, y_upper, y_lower):
         self.x_lower = x_lower
         self.x_upper = x_upper
         self.y_lower = y_lower
         self.y_upper = y_upper
+        self.target_types = list(str.ascii_uppercase)
         self.objects = []
         self.public_channel = com.CommunicationChannel(0)
-        
 
-    #Registers an object in the environment.
-    #Uses the validPosition function.
-    #Returns True if registration is successful.
-    #Returns False if registration is unsuccessful.
-    
-    def registerObject(self, object):
-        if self.validPosition(object):
-            self.objects.append(object)
-            return True
-        else:
-            return False
+    #Populates an environment with the number of agents and number of targets per agent specified.
+    #Found space variable makes sure it's safe to add the randomly generated agent. Only becomes true when position is valid.
+    def populate(self, number_of_agents, targets_per_agent):
+        for i in range(number_of_agents):
+            found_space = False
+            while(not found_space):
+                agent = agt.Agent(self, ran.randint(self.x_lower, self.x_upper), ran.randint(self.y_lower, self.y_upper), self.target_types[i])
+                found_space = self.validPosition(agent.body)
+            self.objects.append(agent.body)
+                for j in range(targets_per_agent):
+                    found_space = False
+                    while(not found_space):
+                        target = obj.Target(self, ran.randint(self.x_lower, self.x_upper), ran.randint(self.y_lower, self.y_upper), self.target_types[i])
+                        found_space = self.validPosition(target)
+                    self.objects.append(target)
         
-    
+        
     #Function checks if proposed position is valid.
     #Validity variable holds the validity of the position. Only changes if position is invalid.
     #Avoids unneccessary entry if first condition makes the position invalid.
