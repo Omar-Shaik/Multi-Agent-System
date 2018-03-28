@@ -5,10 +5,12 @@ class CommunicationChannel:
     #The access list holds all agents that have access to the channel.
     #The message log holds all previous messages.
     
+    
     def __init__(self, type):
         self.channel_type = type
         self.access_list = []
         self.message_log = []
+    
     
     #Only public channels can have unlimited accessors in it.
     #Private channels cannot be formed between more than two agents.
@@ -17,6 +19,7 @@ class CommunicationChannel:
         if (self.channel_type == 0 or len(self.access_list) < 2):
             self.access_list.append(accessor)
 
+            
     #A message is sent by specifying the sender and the message.
     #Message is only sent if sender is in the access list.
     #Message is added to the message log.
