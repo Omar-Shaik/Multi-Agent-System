@@ -11,8 +11,8 @@ class Agent:
         self.heading = []
         self.next_move = []
         
-    def sendMessage(channel, message):
-        channel.send_message(self, message)
+    def sendMessage(self, channel, message):
+        channel.sendMessage(self, message)
         
     def readNewMessage(self):
         for i in self.new_messages:
