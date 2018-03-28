@@ -8,6 +8,7 @@ import string as str
 
 class Environment:
     # Create new environment with the given bounds
+    
     def __init__(self, x_upper, x_lower, y_upper, y_lower):
         self.x_lower = x_lower
         self.x_upper = x_upper
@@ -17,8 +18,10 @@ class Environment:
         self.objects = []
         self.public_channel = com.CommunicationChannel(0)
 
+        
     #Populates an environment with the number of agents and number of targets per agent specified.
     #Found space variable makes sure it's safe to add the randomly generated agent. Only becomes true when position is valid.
+    
     def populate(self, number_of_agents, targets_per_agent):
         for i in range(number_of_agents):
             found_space = False
