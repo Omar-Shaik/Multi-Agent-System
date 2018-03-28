@@ -10,29 +10,29 @@ class Environment:
         self.y_upper = y_upper
         self.objects = []
         self.public_channel = com.CommunicationChannel(0)
+        
 
-    '''
-    Registers an object in the environment.
-    Uses the validPosition function.
-    Returns True if registration is successful.
-    Returns False if registration is unsuccessful.
-    '''
+    #Registers an object in the environment.
+    #Uses the validPosition function.
+    #Returns True if registration is successful.
+    #Returns False if registration is unsuccessful.
+    
     def registerObject(self, object):
         if self.validPosition(object):
             self.objects.append(object)
             return True
         else:
             return False
+        
     
-    '''
-    Function checks if proposed position is valid.
-    Validity variable holds the validity of the position. Only changes if position is invalid.
-    Avoids unneccessary entry if first condition makes the position invalid.
-    First if statement checks if the position is in the bounds of the envrionment.
-    Second if statement is a loop that compares the position of every object currently in the environment with the proposed position.
-    Third if statement within second checks if that position is currently occupied.
-    Third if statement also makes sure that two agents don't get too close to one another. Their radars cannot overlap, meaning 20cm.
-    '''
+    #Function checks if proposed position is valid.
+    #Validity variable holds the validity of the position. Only changes if position is invalid.
+    #Avoids unneccessary entry if first condition makes the position invalid.
+    #First if statement checks if the position is in the bounds of the envrionment.
+    #Second if statement is a loop that compares the position of every object currently in the environment with the proposed position.
+    #Third if statement within second checks if that position is currently occupied.
+    #Third if statement also makes sure that two agents don't get too close to one another. Their radars cannot overlap, meaning 20cm.
+    
     def validPosition(self, object):
         validity = True
         if object.position[0] >= self.x_upper or object.position[0] <= self.x_lower or object.position[1] >= self.y_upper or object.position[1] <= self.y_lower:
@@ -43,10 +43,10 @@ class Environment:
                     validity = False
         return validity
     
-    '''
-    Returns a list of elements visible to the body.
-    Removes targets that have the same target type as the body from the environment if they are within radar range.
-    '''
+    
+    #Returns a list of elements visible to the body.
+    #Removes targets that have the same target type as the body from the environment if they are within radar range.
+    
     def scanner(self, body):
         visible = []
         for object in self.objects:
