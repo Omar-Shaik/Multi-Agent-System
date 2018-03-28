@@ -18,15 +18,20 @@ class CompetitiveController(Controller):
         def __init__(self):
         
         
-        def scan(self):
-        
+        def radar(self):
+            
+            
+        def nextMove(self):       
         
 class CollaborativeController(Controller):
 
         def __init__(self):
         
         
-        def scan(self):
+        def radar(self):
+            
+        
+        def nextMove(self)
         
 
 class CompassionateController(Controller):
@@ -34,5 +39,8 @@ class CompassionateController(Controller):
         def __int__(self):
         
         
-        def scan(sefl):
+        def radar(self):
+            
+        
+        def nextMove(self):
         
