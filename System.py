@@ -1,5 +1,5 @@
-import Environment as env
-import Agent as agt
+import Environment 
+import Agent 
 
 class MultiAgentSystem:
 
@@ -7,7 +7,7 @@ class MultiAgentSystem:
 
         self.scenarios = ["Competitive", "Compassionate", "Collaborative"]
         self.scenario_type = self.scenarios.index(scenario) 
-        self.environment = env.Environment(x_upper, x_lower, y_upper, y_lower)
+        self.environment = Environment.Environment(x_upper, x_lower, y_upper, y_lower)
         self.environment.populate(number_of_agents, targets_per_agent)
         
         
