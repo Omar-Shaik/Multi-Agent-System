@@ -1,10 +1,10 @@
-import Body as bod
+import Object as obj
 import Controller as con
-class Agent:
 
+class Agent:
     def __init__(self, env, x, y, type):
-        self.body = bod(env, x, y, type)
-        self.controller = con(self.body)
+        self.body = obj.Body(env, x, y, type)
+        self.controller = con.Controller(self.body)
         self.channels = []
         self.new_messages = []
         self.collected_count = 0
