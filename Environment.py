@@ -63,7 +63,7 @@ class Environment:
     
      def colisionAvoidance(self, controller):
         for a in self.agents:
-            if self.distance(a, controller.body.pos) < 20:
+            if self.distance(a, controller.body) < 20:
                 return False
             else:
                 return True
