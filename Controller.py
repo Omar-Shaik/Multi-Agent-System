@@ -24,7 +24,15 @@ class Controller:
                 getNext()
     
     def getNext(self):
-        if heading is not None:
+        got_next = False
+        if heading is None:
+            got_next = False
+            while not got_next:
+                pos = [self.body.position[0] + random.randint(0, 1), self.body.position[1] + random.randint(0, 1)]
+                got_next = validPosition(pos)
+            next_mov = pos
+            new_mov = 1
+        else:    
             if self.heading[0] - self.body.position[0] != 0:
                 if self.heading[0] - self.body.position[0] > 0:
                     if self.env.validPosition([self.body.position[0] + self.right[0], self.body.position[1] + self.right[1]):
