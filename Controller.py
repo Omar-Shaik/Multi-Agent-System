@@ -9,6 +9,7 @@ class Controller:
         self.right = [1, 0]
         self.down = [0, -1]
         self.left = [-1, 0]
+        self.heading = None
         self.new_mov = 0
         self.next_mov = None
         
