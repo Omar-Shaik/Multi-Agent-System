@@ -47,8 +47,6 @@ class Environment:
 # First if statement checks if the position is in the bounds of the envrionment.
 # Second if statement is a loop that makes sure that agents aren't placed too close to other agents.
 # Third if statement within second checks if that position is currently occupied.
-# Third if statement also makes sure that two agents don't get too close to one another. Their radars cannot overlap, meaning 20cm.
-
 
    def validPosition(self, object):
        validity = True
@@ -63,7 +61,6 @@ class Environment:
                        if (t.pos[0] == object.pos[0] and t.pos[1] == object.pos[1]):
                                validity = False
        return validity
-
 
 
 # Returns a list of elements visible to the body.
