@@ -1,16 +1,16 @@
 class Controller:
     def __init__(self, body, env):
+        self.environment = env
+        self.body = body
+        self.body.controller = self
+        self.collected = 0
         self.stay = [0, 0]
         self.up = [0, 1]
         self.right = [1, 0]
         self.down = [0, -1]
         self.left = [-1, 0]
-        self.collected = 0
-        self.body = body
-        self.environment = env
-        self.body.controller = self
-        self.new_pos = 0
-        self.next_pos = None
+        self.new_mov = 0
+        self.next_mov = None
         
     def goToNext(self):
         moved = False
@@ -20,6 +20,8 @@ class Controller:
                 moved = True
             else:
                 getNext()
+    
+    def getNext(self):
             
         
         
