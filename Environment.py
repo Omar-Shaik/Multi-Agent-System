@@ -68,10 +68,11 @@ class Environment:
         return validity
 
 
+
 # Returns a list of elements visible to the body.
 # Removes targets that have the same target type as the body from the environment if they are within radar range.
 
-    def objectsAround(self, body):
+    def objectsAround(self, body, need_visible):
         visible = []
 
         for t in self.targets:
@@ -83,8 +84,10 @@ class Environment:
                 else:
                     visible.append(t)
 
-        return visible
+        if need_visible:
+            return visible
 
 #Returns euclidean distance between two objects: o1 and o2
     def distance(self, o1, o2):
         return math.sqrt((o1.pos[0] - o2.pos[0]) ** 2 + (o1.pos[1] - o2.pos[1]) ** 2)
+    
