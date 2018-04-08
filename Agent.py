@@ -12,3 +12,4 @@ class Agent:
         elif controller_type == 2:
             self.controller = Controller.Compassionate_Controller(self.body, env)
         self.body.controller = self.controller
+        self.channels = []
