@@ -8,6 +8,15 @@ class Controller:
         self.body = body
         self.environment = env
         self.body.controller = self
+        self.new_pos = 0
+        self.next_pos = None
+        
+    def goToNext(self):
+        if new_pos == 1:
+            if self.env.validPosition(next_pos):
+                self.body.move(next_pos)
+        
+        
 
     def scanner(self):
         return self.body.env.objectsAround(self)
