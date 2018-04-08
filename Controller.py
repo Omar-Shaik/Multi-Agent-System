@@ -12,9 +12,13 @@ class Controller:
         self.next_pos = None
         
     def goToNext(self):
-        if new_pos == 1:
-            if self.env.validPosition(next_pos):
+        moved = False
+        while not moved:
+            if new_pos == 1:
                 self.body.move(next_pos)
+                moved = True
+            else:
+                getNext()
         
         
 
