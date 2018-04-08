@@ -28,6 +28,8 @@ class Environment:
                 agent = Agent.Agent(self, random.randint(self.x_lower, self.x_upper),
                                     random.randint(self.y_lower, self.y_upper), self.target_types[i], controller_type)
                 found_space = self.validPosition(agent.body)
+            self.public_channel.addAccess(agent)
+            agent.channels.append(self.public_channel)
             self.agents.append(agent)
 
             for j in range(targets_per_agent):
@@ -83,5 +85,6 @@ class Environment:
 
         return visible
 
+#Returns euclidean distance between two objects: o1 and o2
     def distance(self, o1, o2):
         return math.sqrt((o1.pos[0] - o2.pos[0]) ** 2 + (o1.pos[1] - o2.pos[1]) ** 2)
