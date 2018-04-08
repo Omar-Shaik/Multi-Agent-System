@@ -10,6 +10,7 @@ class Controller:
         self.body.controller = self
         self.new_pos = 0
         self.next_pos = None
+        self.stay = 00
         
     def goToNext(self):
         moved = False
@@ -19,6 +20,7 @@ class Controller:
                 moved = True
             else:
                 getNext()
+            
         
         
 
