@@ -81,5 +81,6 @@ class Environment:
                 self.targets.remove(t)
         return visible
     
+    #Returns euclidean distance between two objects
     def distance(o1, o2):
         return math.sqrt((o1.pos[0] - o2.pos[0]) ** 2 + (o1.pos[1] - o2.pos[1]) ** 2)
