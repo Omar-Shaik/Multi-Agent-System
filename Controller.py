@@ -21,9 +21,6 @@ class Controller:
             else:
                 getNext()
     
-    def getNext(self):
-            
-
 
 class Competitive_Controller(Controller):
     def __init__(self, body, env):
