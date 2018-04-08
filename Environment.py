@@ -45,7 +45,7 @@ class Environment:
 # Validity variable holds the validity of the position. Only changes if position is invalid.
 # Avoids unneccessary entry if first condition makes the position invalid.
 # First if statement checks if the position is in the bounds of the envrionment.
-# Second if statement is a loop that compares the position of every object currently in the environment with the proposed position.
+# Second if statement is a loop that makes sure 
 # Third if statement within second checks if that position is currently occupied.
 # Third if statement also makes sure that two agents don't get too close to one another. Their radars cannot overlap, meaning 20cm.
 
@@ -54,11 +54,11 @@ class Environment:
        validity = True
        if object.pos[0] >= self.x_upper or object.pos[0] <= self.x_lower or object.pos[1] >= self.y_upper or object.pos[1] <= self.y_lower:
            validity = False
-       if validity:
+       if validity and object.target_type == 1:
            for a in self.agents:
                if (a.pos[0] == object.pos[0] and a.pos[1] == object.pos[1]) or (math.sqrt((a.pos[0] - object.pos[0]) ** 2 + (a.pos[1] - object.pos[1]) ** 2)) < 20:
                    validity = False
-       if validity:
+       if validity and object.target_type == 0:
                for t in self.targets:
                        if (t.pos[0] == object.pos[0] and t.pos[1] == object.pos[1]):
                                validity = False
