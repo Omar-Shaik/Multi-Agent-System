@@ -1,5 +1,6 @@
 class Controller:
     def __init__(self, body, env):
+        self.stay = [0, 0]
         self.up = [0, 1]
         self.right = [1, 0]
         self.down = [0, -1]
@@ -10,7 +11,6 @@ class Controller:
         self.body.controller = self
         self.new_pos = 0
         self.next_pos = None
-        self.stay = 00
         
     def goToNext(self):
         moved = False
