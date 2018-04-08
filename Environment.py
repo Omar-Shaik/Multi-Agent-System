@@ -8,8 +8,10 @@ import Object
 
 class Environment:
     # Create new environment with the given bounds
+    # Populates an environment with the number of agents and number of targets per agent specified.
+    # Found space variable makes sure it's safe to add the randomly generated agent. Only becomes true when position is valid.
 
-    def __init__(self, x_lower, y_lower, length, height):
+    def __init__(self, x_lower, y_lower, length, height, number_of_agents, targets_per_agent, controller_type):
         self.x_lower = x_lower
         self.y_lower = y_lower
         self.x_upper = x_lower + length
@@ -19,25 +21,22 @@ class Environment:
         self.agents = []
         self.targets = []
         self.public_channel = Communication.CommunicationChannel(0)
+        for i in range(number_of_agents):
+            found_space = False
 
-    # Populates an environment with the number of agents and number of targets per agent specified.
-    # Found space variable makes sure it's safe to add the randomly generated agent. Only becomes true when position is valid.
+            while not found_space:
+                agent = Agent.Agent(self, random.randint(self.x_lower, self.x_upper),
+                                    random.randint(self.y_lower, self.y_upper), self.target_types[i], controller_type)
+                found_space = self.validPosition(agent.body)
+            self.agents.append(agent)
 
-        def populate(self, number_of_agents, targets_per_agent, controller_type):
-            for i in range(number_of_agents):
+            for j in range(targets_per_agent):
                 found_space = False
-
                 while not found_space:
-                    agent = Agent.Agent(self, random.randint(self.x_lower, self.x_upper), random.randint(self.y_lower, self.y_upper), self.target_types[i], controller_type)
-                    found_space = self.validPosition(agent.body)
-                    self.agents.append(agent)
-
-                for j in range(targets_per_agent):
-                    found_space = False
-                    while not found_space:
-                        target = Object.Target(random.randint(self.x_lower, self.x_upper), random.randint(self.y_lower, self.y_upper), self.target_types[i])
-                        found_space = self.validPosition(target)
-                        self.objects.append(target)
+                    target = Object.Target(random.randint(self.x_lower, self.x_upper),
+                                           random.randint(self.y_lower, self.y_upper), self.target_types[i])
+                    found_space = self.validPosition(target)
+                self.targets.append(target)
 
 
 # Function checks if proposed position is valid.
