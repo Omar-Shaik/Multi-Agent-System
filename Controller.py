@@ -23,17 +23,7 @@ class Controller:
     
     def getNext(self):
             
-        
-        
 
-    def scanner(self):
-        return self.body.env.objectsAround(self)
-
-    def radar(self):
-        return 0
-
-    def nextMove(self):
-        return 0
 
 class Competitive_Controller(Controller):
     def __init__(self, body, env):
