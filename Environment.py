@@ -76,12 +76,11 @@ class Environment:
 
         for t in self.targets:
             if self.distance(body, t) <= 10:
-                visible.append(t)
-
                 if body.target_type == t.target_type:
                     self.targets.remove(t)
-                    body.Controller.collected += 1
-
+                    body.controller.collected += 1
+                else:
+                    visible.append(t)
         return visible
 
     def distance(self, o1, o2):
