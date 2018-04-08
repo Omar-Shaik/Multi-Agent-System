@@ -55,13 +55,13 @@ class Environment:
        if object.pos[0] >= self.x_upper or object.pos[0] <= self.x_lower or object.pos[1] >= self.y_upper or object.pos[1] <= self.y_lower:
            validity = False
        if validity:
-          for a in  in self.agents:
-           if (a.pos[0] == object.pos[0] and a.pos[1] == object.pos[1]) or (math.sqrt((a.pos[0] - object.pos[0]) ** 2 + (a.pos[1] - object.pos[1]) ** 2)) < 20:
-               validity = False
+           for a in self.agents:
+               if (a.pos[0] == object.pos[0] and a.pos[1] == object.pos[1]) or (math.sqrt((a.pos[0] - object.pos[0]) ** 2 + (a.pos[1] - object.pos[1]) ** 2)) < 20:
+                   validity = False
        if validity:
                for t in self.targets:
                        if (t.pos[0] == object.pos[0] and t.pos[1] == object.pos[1]):
-                               validity = false  
+                               validity = False
        return validity
 
 
