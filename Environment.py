@@ -45,7 +45,7 @@ class Environment:
 # Validity variable holds the validity of the position. Only changes if position is invalid.
 # Avoids unneccessary entry if first condition makes the position invalid.
 # First if statement checks if the position is in the bounds of the envrionment.
-# Second if statement is a loop that makes sure 
+# Second if statement is a loop that makes sure that agents aren't placed too close to other agents.
 # Third if statement within second checks if that position is currently occupied.
 # Third if statement also makes sure that two agents don't get too close to one another. Their radars cannot overlap, meaning 20cm.
 
@@ -80,3 +80,6 @@ class Environment:
             if body.target_type == t.target_type:
                 self.targets.remove(t)
         return visible
+    
+    def distance(o1, o2):
+        return math.sqrt((o1.pos[0] - o2.pos[0]) ** 2 + (o1.pos[1] - o2.pos[1]) ** 2)
