@@ -23,20 +23,20 @@ class Environment:
     # Populates an environment with the number of agents and number of targets per agent specified.
     # Found space variable makes sure it's safe to add the randomly generated agent. Only becomes true when position is valid.
 
-    def populate(self, number_of_agents, targets_per_agent):
+    def populate(self, number_of_agents, targets_per_agent, controller_type):
         for i in range(number_of_agents):
             found_space = False
+
             while not found_space:
-                agent = Agent.Agent(self, random.randint(self.x_lower, self.x_upper),
-                                    random.randint(self.y_lower, self.y_upper), self.target_types[i])
+                agent = Agent.Agent(self, random.randint(self.x_lower, self.x_upper), random.randint(self.y_lower, self.y_upper), self.target_types[i], controller_type)
                 found_space = self.validPosition(agent.body)
-                self.objects.append(agent.body)
+
+            self.agents.append(agent)
 
             for j in range(targets_per_agent):
                 found_space = False
                 while not found_space:
-                    target = Object.Target(self, random.randint(self.x_lower, self.x_upper),
-                                           random.randint(self.y_lower, self.y_upper), self.target_types[i])
+                    target = Object.Target(self, random.randint(self.x_lower, self.x_upper), random.randint(self.y_lower, self.y_upper), self.target_types[i])
                     found_space = self.validPosition(target)
                     self.objects.append(target)
 
