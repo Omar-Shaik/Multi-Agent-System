@@ -35,7 +35,7 @@ class Environment:
                 for j in range(targets_per_agent):
                     found_space = False
                     while not found_space:
-                        target = Object.Target(self, random.randint(self.x_lower, self.x_upper), random.randint(self.y_lower, self.y_upper), self.target_types[i])
+                        target = Object.Target(random.randint(self.x_lower, self.x_upper), random.randint(self.y_lower, self.y_upper), self.target_types[i])
                         found_space = self.validPosition(target)
                         self.objects.append(target)
 
