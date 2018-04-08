@@ -12,7 +12,10 @@ class Controller:
         self.heading = None
         self.new_mov = 0
         self.next_mov = None
+    
+    def headThere(self):
         
+    
     def goToNext(self):
         moved = False
         while not moved:
@@ -22,6 +25,12 @@ class Controller:
             else:
                 getNext()
     
+    def getNext(self):
+        if heading is not None:
+            next_mov = headThere()
+            new_mov = 1
+        
+        
 
 class Competitive_Controller(Controller):
     def __init__(self, body, env):
