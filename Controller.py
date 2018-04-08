@@ -12,9 +12,7 @@ class Controller:
         self.heading = None
         self.new_mov = 0
         self.next_mov = None
-    
-    def headThere(self):
-        
+   
     
     def goToNext(self):
         moved = False
@@ -27,8 +25,23 @@ class Controller:
     
     def getNext(self):
         if heading is not None:
-            next_mov = headThere()
-            new_mov = 1
+            if self.heading[0] - self.body.position[0] != 0:
+                if self.heading[0] - self.body.position[0] > 0:
+                    if self.env.validPosition([self.body.position[0] + self.right[0], self.body.position[1] + self.right[1]):
+                        self.next_mov = self.right 
+                else:
+                    if self.env.validPosition([self.body.position[0] + self.left[0], self.body.position[1] + self.left[1]):
+                        self.next_mov = self.left
+           elif self.heading[1] - self.body.position[1] != 0:
+                if self.heading[1] - self.body.position[1] > 0:
+                    if self.env.validPosition([self.body.position[0] + self.up[0], self.body.position[1] + self.up[1]):
+                        self.next_mov = self.up
+                else:
+                    if self.env.validPosition([self.body.position[0] + self.down[0], self.body.position[1] + self.down[1]):
+                        self.next_mov = self.down
+           else:
+                next_mov = self.stay
+           new_mov = 1
         
         
 
