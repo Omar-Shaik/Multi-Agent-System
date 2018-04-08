@@ -9,14 +9,17 @@ import Object
 class Environment:
     # Create new environment with the given bounds
 
-    def __init__(self, x_upper, x_lower, y_upper, y_lower):
-        self.x_lower = x_lower
-        self.x_upper = x_upper
-        self.y_lower = y_lower
-        self.y_upper = y_upper
-        self.target_types = list(string.ascii_uppercase)
-        self.objects = []
-        self.public_channel = Communication.CommunicationChannel(0)
+   def __init__(self, x_lower, y_lower, length, height):
+       self.x_lower = x_lower
+       self.y_lower = y_lower
+       self.x_upper = x_lower + length
+       self.y_upper = y_lower + height
+       self.target_types = list(string.ascii_uppercase)
+       self.target_type_counter = 0
+       self.agents = []
+       self.targets = []
+       self.public_channel = Communication.CommunicationChannel(0)
+
 
     # Populates an environment with the number of agents and number of targets per agent specified.
     # Found space variable makes sure it's safe to add the randomly generated agent. Only becomes true when position is valid.
@@ -46,25 +49,34 @@ class Environment:
 # Third if statement within second checks if that position is currently occupied.
 # Third if statement also makes sure that two agents don't get too close to one another. Their radars cannot overlap, meaning 20cm.
 
-    def validPosition(self, object):
-        validity = True
-        if object.position[0] >= self.x_upper or object.position[0] <= self.x_lower or object.position[1] >= self.y_upper or object.position[1] <= self.y_lower:
-            validity = False
-        if (validity):
-           for obj in self.objects:
-            if (obj.postion[0] == object.position[0] and obj.position[1] == object.position[1]) or (obj.object_type == 1 and math.sqrt((obj.pos[0] - object.position[0]) ** 2 + (obj.pos[1] - object.position[1]) ** 2)) < 20:
-                validity = False
-        return validity
+
+   def validPosition(self, object):
+       validity = True
+       if object.pos[0] >= self.x_upper or object.pos[0] <= self.x_lower or object.pos[1] >= self.y_upper or object.pos[1] <= self.y_lower:
+           validity = False
+       if validity:
+          for a in  in self.agents:
+           if (a.pos[0] == object.pos[0] and a.pos[1] == object.pos[1]) or (math.sqrt((a.pos[0] - object.pos[0]) ** 2 + (a.pos[1] - object.pos[1]) ** 2)) < 20:
+               validity = False
+       if validity:
+               for t in self.targets:
+                       if (t.pos[0] == object.pos[0] and t.pos[1] == object.pos[1]):
+                               validity = false  
+       return validity
+
 
 
 # Returns a list of elements visible to the body.
 # Removes targets that have the same target type as the body from the environment if they are within radar range.
 
-    def scanner(self, body):
+   def objectsAround(self, body):
         visible = []
-        for object in self.objects:
-            if math.sqrt((body.position[0] - object.position[0]) ** 2 + (body.position[1] - object.position[1]) ** 2) <= 10:
-                visible.append(body)
-            if body.target_type == object.target_type:
-                self.objects.remove(object)
+        for t in self.targets:
+            if math.sqrt((body.pos[0] - t.pos[0]) ** 2 + (body.pos[1] - t.pos[1]) ** 2) <= 10:
+                if body.target_type == t.target_type:
+                    self.targets.remove(t)
+                    body.controller.collected += 1 
+                visible.append(t)
+            if body.target_type == t.target_type:
+                self.targets.remove(t)
         return visible
