@@ -17,7 +17,6 @@ class Environment:
         self.x_upper = x_lower + length
         self.y_upper = y_lower + height
         self.target_types = list(string.ascii_uppercase)
-        self.target_type_counter = 0
         self.agents = []
         self.targets = []
         self.public_channel = Communication.CommunicationChannel(0)
@@ -25,19 +24,19 @@ class Environment:
             found_space = False
 
             while not found_space:
-                agent = Agent.Agent(self, random.randint(self.x_lower, self.x_upper),
-                                    random.randint(self.y_lower, self.y_upper), self.target_types[i], controller_type)
-                found_space = self.validPosition(agent.body)
+                position = [random.randint(self.x_lower, self.x_upper), random.randint(self.y_lower, self.y_upper)]
+                found_space = self.validPosition(position)
+            agent = Agent.Agent(self, position[0], position[1], self.target_types[i], controller_type)
             self.public_channel.addAccess(agent)
-            agent.channels.append(self.public_channel)
+            agent.controller.channels.append(self.public_channel)
             self.agents.append(agent)
 
             for j in range(targets_per_agent):
                 found_space = False
                 while not found_space:
-                    target = Object.Target(random.randint(self.x_lower, self.x_upper),
-                                           random.randint(self.y_lower, self.y_upper), self.target_types[i])
-                    found_space = self.validPosition(target)
+                    position = [random.randint(self.x_lower, self.x_upper), random.randint(self.y_lower, self.y_upper)]
+                    found_space = self.validPosition(position)
+                target = Object.Target(position[0], position[1], self.target_types[i])
                 self.targets.append(target)
 
 
@@ -49,20 +48,15 @@ class Environment:
 # Third if statement within second checks if that position is currently occupied.
 # Third if statement also makes sure that two agents don't get too close to one another. Their radars cannot overlap, meaning 20cm.
 
-    def validPosition(self, object):
+    def validPosition(self, position):
         validity = True
 
-        if object.position[0] >= self.x_upper or object.position[0] <= self.x_lower or object.position[1] >= self.y_upper or object.position[1] <= self.y_lower:
+        if position[0] >= self.x_upper or position[0] <= self.x_lower or position[1] >= self.y_upper or position[1] <= self.y_lower:
             validity = False
-
-        if validity and object.target_type == 1:
-            for a in self.agents:
-                if (a.pos[0] == object.pos[0] and a.pos[1] == object.pos[1]) or self.distance(a, object) <= 20:
-                    validity = False
 
         if validity:
             for t in self.targets:
-                if t.pos[0] == object.pos[0] and t.pos[1] == object.pos[1]:
+                if t.pos[0] == position[0] and t.pos[1] == position[1]:
                     validity = False
 
         return validity
