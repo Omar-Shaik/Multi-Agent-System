@@ -23,22 +23,21 @@ class Environment:
     # Populates an environment with the number of agents and number of targets per agent specified.
     # Found space variable makes sure it's safe to add the randomly generated agent. Only becomes true when position is valid.
 
-    def populate(self, number_of_agents, targets_per_agent, controller_type):
-        for i in range(number_of_agents):
-            found_space = False
-
-            while not found_space:
-                agent = Agent.Agent(self, random.randint(self.x_lower, self.x_upper), random.randint(self.y_lower, self.y_upper), self.target_types[i], controller_type)
-                found_space = self.validPosition(agent.body)
-
-            self.agents.append(agent)
-
-            for j in range(targets_per_agent):
+        def populate(self, number_of_agents, targets_per_agent, controller_type):
+            for i in range(number_of_agents):
                 found_space = False
+
                 while not found_space:
-                    target = Object.Target(self, random.randint(self.x_lower, self.x_upper), random.randint(self.y_lower, self.y_upper), self.target_types[i])
-                    found_space = self.validPosition(target)
-                    self.objects.append(target)
+                    agent = Agent.Agent(self, random.randint(self.x_lower, self.x_upper), random.randint(self.y_lower, self.y_upper), self.target_types[i], controller_type)
+                    found_space = self.validPosition(agent.body)
+                    self.agents.append(agent)
+
+                for j in range(targets_per_agent):
+                    found_space = False
+                    while not found_space:
+                        target = Object.Target(self, random.randint(self.x_lower, self.x_upper), random.randint(self.y_lower, self.y_upper), self.target_types[i])
+                        found_space = self.validPosition(target)
+                        self.objects.append(target)
 
 
 # Function checks if proposed position is valid.
@@ -57,7 +56,7 @@ class Environment:
 
         if validity and object.target_type == 1:
             for a in self.agents:
-                if (a.pos[0] == object.pos[0] and a.pos[1] == object.pos[1]) or self.distance(a, object) < 20:
+                if (a.pos[0] == object.pos[0] and a.pos[1] == object.pos[1]) or self.distance(a, object) <= 20:
                     validity = False
 
         if validity:
@@ -78,11 +77,12 @@ class Environment:
             if self.distance(body, t) <= 10:
                 if body.target_type == t.target_type:
                     self.targets.remove(t)
-                    body.controller.collected += 1
+                    body.Controller.collected += 1
+
                 else:
                     visible.append(t)
+
         return visible
 
-#Returns euclidean distance between two objects: o1 and o2.    
     def distance(self, o1, o2):
         return math.sqrt((o1.pos[0] - o2.pos[0]) ** 2 + (o1.pos[1] - o2.pos[1]) ** 2)
