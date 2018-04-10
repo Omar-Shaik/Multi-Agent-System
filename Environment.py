@@ -107,5 +107,6 @@ class Environment:
             # Returns euclidean distance between two objects: o1 and o2
 
     def distance(self, o1, o2):
-        return math.sqrt((o1.pos[0] - o2.pos[0]) ** 2 + (o1.pos[1] - o2.pos[1]) ** 2) 
+        return math.sqrt((o1.pos[0] - o2.pos[0]) ** 2 + (o1.pos[1] - o2.pos[1]) ** 2)
+
     
