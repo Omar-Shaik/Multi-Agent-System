@@ -13,6 +13,7 @@ class Controller:
         self.new_mov = 0
         self.next_mov = None
         self.stop = False
+	self.channels = []
 
 
     def steer(dir):
