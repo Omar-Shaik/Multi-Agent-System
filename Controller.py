@@ -79,7 +79,7 @@ class Competitive_Controller(Controller):
             		else:
                 		self.stop = True
 		
-    def scan(self):
+    	def scan(self):
     	visible = self.env.objectsAround(self)
 
                         
