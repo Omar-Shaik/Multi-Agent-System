@@ -82,7 +82,7 @@ class Competitive_Controller(Controller):
                 self.stop = True
 
     def scan(self):
-        visible = self.environment.objectsAround(self)
+        visible = self.environment.objectsAround(self.body, False)
 
 
 class Collaborative_Controller(Controller):
@@ -90,12 +90,12 @@ class Collaborative_Controller(Controller):
         Controller.__init__(self, body, env)
 
     def readMessages(self):
-        for i in self.new_messages:
+        for i in self.body.new_messages:
             if i[0] == "head":
                 self.headings.append(i[1])
 
     def scan(self):
-        visible = self.environment.objectsAround(self)
+        visible = self.environment.objectsAround(self.body, True)
         if self.collected < self.environment.number_of_targets:
             self.stop = True
 
@@ -108,14 +108,14 @@ class Compassionate_Controller(Controller):
         Controller.__init__(self, body, env)
 
     def readMessages(self):
-        for i in self.new_messages:
+        for i in self.body.new_messages:
             if i[0] == "head":
                 self.headings.append(i[1])
         else:
             self.stop = True
 
     def scan(self):
-        visible = self.environment.objectsAround(self)
+        visible = self.environment.objectsAround(self.body, True)
         if self.collected < self.environment.number_of_targets:
             self.stop = True
 
