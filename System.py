@@ -36,7 +36,7 @@ class MultiAgentSystem:
             agent_y.append(a.body.position[1])
 
         for t in self.env.targets:
-            target_x.append(t.body.position[0])
-            target_y.append(t.body.position[1])
+            target_x.append(t.position[0])
+            target_y.append(t.position[1])
             
         plt.plot(agent_x, agent_y, 'bo', target_x, target_y, 'ro')
