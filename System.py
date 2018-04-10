@@ -19,4 +19,4 @@ class MultiAgentSystem:
                 done += 1
 
         for a in self.env.agents:
-            a.search() 
+            a.search()
