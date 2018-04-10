@@ -17,6 +17,7 @@ class Environment:
         self.x_upper = x_lower + length
         self.y_upper = y_lower + height
         self.target_types = list(string.ascii_uppercase)
+        self.number_of_agents = number_of_agents
         self.agents = []
         self.targets = []
         self.public_channel = Communication.CommunicationChannel(0)
