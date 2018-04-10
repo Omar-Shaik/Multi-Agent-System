@@ -19,6 +19,7 @@ class Environment:
         self.agents = []
         self.targets = []
         self.public_channel = Communication.CommunicationChannel(0)
+        
         for i in range(number_of_agents):
             found_space = False
         
