@@ -17,8 +17,8 @@ class Controller:
     def goToNext(self):
         moved = False
         while not moved:
-            if new_pos == 1:
-                self.body.move(next_pos)
+            if new_mov == 1:
+                self.body.move(next_mov)
                 moved = True
             else:
                 getNext()
@@ -39,16 +39,16 @@ class Controller:
                 else:
                     if self.env.validPosition([self.body.position[0] + self.left[0], self.body.position[1] + self.left[1]):
                         self.next_mov = self.left
-           elif self.heading[1] - self.body.position[1] != 0:
+            else self.heading[1] - self.body.position[1] != 0:
                 if self.heading[1] - self.body.position[1] > 0:
                     if self.env.validPosition([self.body.position[0] + self.up[0], self.body.position[1] + self.up[1]):
                         self.next_mov = self.up
-                else:
+                elif:
                     if self.env.validPosition([self.body.position[0] + self.down[0], self.body.position[1] + self.down[1]):
                         self.next_mov = self.down
-           else:
-                next_mov = self.stay
-           new_mov = 1
+                else:
+                        next_mov = self.stay
+            new_mov = 1
         
         
 
