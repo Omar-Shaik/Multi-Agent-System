@@ -1,6 +1,6 @@
 class Controller:
     def __init__(self, body, env):
-    self.environment = env
+    	self.environment = env
         self.body = body
         self.body.controller = self
         self.collected = 0
@@ -15,11 +15,11 @@ class Controller:
         self.stop = False
 
 
-		def steer(dir):
-    	    next_mov = dir
-            new_mov = 1
-   
-		
+    def steer(dir):
+    	next_mov = dir
+        new_mov = 1
+    
+    			
     def goToNext(self):
         if stop:
             steer(self.stay)
@@ -33,8 +33,8 @@ class Controller:
                         self.headings.rem(self.body.position)
                 else:
                     getNext()
-  
-
+    
+    	
     def getNext(self):
         if not headings:
             got_next = False
