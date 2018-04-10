@@ -3,7 +3,7 @@ import Controller
 
 
 class Agent:
-    def __init__(self, env, x, y, target_type, controller_type):
+    def __init__(self, env, x, y, target_type, controller_type, number_of_targets):
         self.body = Object.Body(x, y, target_type)
         if controller_type == 0:
             self.controller = Controller.Competitive_Controller(self.body, env)
