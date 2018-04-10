@@ -45,9 +45,9 @@ class Environment:
                 agent1 = agents[i]
                 agent2 = agents[j]
                 channel.addAccess(agent1)
-                agent1.controller.channels.append([agent2.body.object_type, channel])
+                agent1.controller.channels[agent2.body.object_type] = channel
                 channel.addAccess(agent2)
-                agent2.controller.channels.append([agent1.body.object_type, channel])
+                agent2.controller.channels[agent1.body.object_type] = channel
                 j += 1
             i += 1
 
