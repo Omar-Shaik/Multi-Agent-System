@@ -5,7 +5,6 @@ import Communication
 import Agent
 import Object
 
-
 class Environment:
     # Create new environment with the given bounds
     # Populates an environment with the number of agents and number of targets per agent specified.
