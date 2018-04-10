@@ -25,7 +25,7 @@ class Environment:
             while not found_space:
                 position = [random.randint(self.x_lower, self.x_upper), random.randint(self.y_lower, self.y_upper)]
                 found_space = self.validPosition(position)
-            agent = Agent.Agent(self, position[0], position[1], self.target_types[i], controller_type, tarets_per_agent)
+            agent = Agent.Agent(self, position[0], position[1], self.target_types[i], controller_type, targets_per_agents)
             self.public_channel.addAccess(agent)
             agent.controller.channels.append(self.public_channel)
             self.agents.append(agent)
