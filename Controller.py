@@ -1,6 +1,8 @@
+import random
+
 class Controller:
     def __init__(self, body, env):
-    	self.environment = env
+        self.environment = env
         self.body = body
         self.body.controller = self
         self.collected = 0
@@ -12,116 +14,107 @@ class Controller:
         self.headings = []
         self.new_mov = 0
         self.next_mov = None
-	self.steps = 0
+        self.steps = 0
         self.stop = False
-	self.channels = {}
+        self.channels = {}
 
+    def steer(self, dir):
+        self.next_mov = dir
+        self.new_mov = 1
 
-    def steer(dir):
-    	next_mov = dir
-        new_mov = 1
-    
-    			
     def goToNext(self):
-        if stop:
-            steer(self.stay)
+        if self.stop:
+            self.steer(self.stay)
         else:
             moved = False
             while not moved:
-                if new_mov == 1:
-                    self.body.move(next_mov)
+                if self.new_mov == 1:
+                    self.body.move(self.next_mov)
                     moved = True
                     if self.body.position in self.headings:
-                        self.headings.rem(self.body.position)
+                        self.headings.remove(self.body.position)
                 else:
-                    getNext()
-    
-    	
+                    self.getNext()
+
     def getNext(self):
-        if not headings:
+        if not self.headings:
             got_next = False
             while not got_next:
                 pos = [self.body.position[0] + random.randint(0, 1), self.body.position[1] + random.randint(0, 1)]
-                got_next = validPosition(pos)
-            steer(pos)
+                got_next = self.environment.validPosition(pos)
+                self.steer(pos)
         else:
-        	got_next = False
+            got_next = False
             if self.headings[0][0] - self.body.position[0] != 0:
                 if self.headings[0][0] - self.body.position[0] > 0:
-                    if self.env.validPosition([self.body.position[0] + self.right[0], self.body.position[1] + self.right[1]):
-                        steer(self.right)
-                       	got_next = True
+                    if self.environment.validPosition([self.body.position[0] + self.right[0], self.body.position[1] + self.right[1]]):
+                        self.steer(self.right)
+                        got_next = True
                 else:
-                    if self.env.validPosition([self.body.position[0] + self.left[0], self.body.position[1] + self.left[1]):
-                        steer(self.left)
+                    if self.environment.validPosition([self.body.position[0] + self.left[0], self.body.position[1] + self.left[1]]):
+                        self.steer(self.left)
                         got_next = True
             if not got_next:
                 if self.headings[0][1] - self.body.position[1] > 0:
-                    if self.env.validPosition([self.body.position[0] + self.up[0], self.body.position[1] + self.up[1]):
-                        steer(self.up)
+                    if self.environment.validPosition([self.body.position[0] + self.up[0], self.body.position[1] + self.up[1]]):
+                        self.steer(self.up)
                     else:
-                        steer(self.stay)
+                        self.steer(self.stay)
                 else:
-                    if self.env.validPosition([self.body.position[0] + self.down[0], self.body.position[1] + self.down[1]):
-                        steer(self.down)
+                    if self.environment.validPosition([self.body.position[0] + self.down[0], self.body.position[1] + self.down[1]]):
+                        self.steer(self.down)
                     else:
-                        steer(self.stay)
-                       
+                        self.steer(self.stay)
 
 
 class Competitive_Controller(Controller):
-	def __init__(self, body, env):
-        	Controller.__init__(self, body, env)
+    def __init__(self, body, env):
+        Controller.__init__(self, body, env)
 
-	def readMessages(self):
-        	for i in new_messages:
-            		if i[0] == "head":
-                		headings.append(i[1])
-            		else:
-                		self.stop = True
-		
-    	def scan(self):
-    		visible = self.env.objectsAround(self)
+    def readMessages(self):
+        for i in self.body.new_messages:
+            if i[0] == "head":
+                self.headings.append(i[1])
+            else:
+                self.stop = True
 
-                        
-     
+    def scan(self):
+        visible = self.environment.objectsAround(self)
+
+
 class Collaborative_Controller(Controller):
-	def __init__(self, body, env):
-    		Controller.__init__(self, body, env)
+    def __init__(self, body, env):
+        Controller.__init__(self, body, env)
 
-	def readMessages(self):
-    		for i in new_messages:
-        	if i[0] == "head":
-            	headings.append(i[1])
-      	
-											   
-	def scan(self):
-    		visible = self.env.objectsAround(self)
-        	if self.collected < self.number_of_targets:
-            	self.stop = True 
-                    
-        for i in visible:
-        	self.channels[i.object_type].sendMessage(self, ["Head", i.position])
+    def readMessages(self):
+        for i in self.body.new_messages:
+            if i[0] == "head":
+                self.headings.append(i[1])
+
+    def scan(self):
+        visible = self.environment.objectsAround(self)
+        if self.collected < self.environment.number_of_targets:
+            self.stop = True
+
+        for i in self.environment.visible:
+            self.channels[i.object_type].sendMessage(self, ["Head", i.position])
 
 
 class Compassionate_Controller(Controller):
-	def __init__(self, body, env):
-    		Controller.__init__(self, body, env)
-    
-    
-	def readMessages(self):
-    		for i in new_messages:
-        	if i[0] == "head":
-            	headings.append(i[1])
-        	else:
-            	self.stop = True
-                
-    
-	def scan(self):
-    		visible = self.env.objectsAround(self)
-      		if self.collected < self.number_of_targets:
-        		self.stop = True 
-          	
-		for i in visible:
-        		self.channels[i.object_type].sendMessage(self, ["Head", i.position] )
- 
+    def __init__(self, body, env):
+        Controller.__init__(self, body, env)
+
+    def readMessages(self):
+        for i in self.body.new_messages:
+            if i[0] == "head":
+                self.headings.append(i[1])
+        else:
+            self.stop = True
+
+    def scan(self):
+        visible = self.environment.objectsAround(self)
+        if self.collected < self.environment.number_of_targets:
+            self.stop = True
+
+        for i in visible:
+            self.channels[i.object_type].sendMessage(self, ["Head", i.position])
