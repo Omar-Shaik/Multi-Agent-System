@@ -17,6 +17,7 @@ class Controller:
         self.steps = 0
         self.stop = False
         self.channels = {}
+        self.new_messages = []
 
     def steer(self, dir):
         self.next_mov = dir
@@ -74,7 +75,7 @@ class Competitive_Controller(Controller):
         Controller.__init__(self, body, env)
 
     def readMessages(self):
-        for i in self.body.new_messages:
+        for i in self.new_messages:
             if i[0] == "head":
                 self.headings.append(i[1])
             else:
@@ -89,7 +90,7 @@ class Collaborative_Controller(Controller):
         Controller.__init__(self, body, env)
 
     def readMessages(self):
-        for i in self.body.new_messages:
+        for i in self.new_messages:
             if i[0] == "head":
                 self.headings.append(i[1])
 
@@ -107,7 +108,7 @@ class Compassionate_Controller(Controller):
         Controller.__init__(self, body, env)
 
     def readMessages(self):
-        for i in self.body.new_messages:
+        for i in self.new_messages:
             if i[0] == "head":
                 self.headings.append(i[1])
         else:
