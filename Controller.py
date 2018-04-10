@@ -24,7 +24,6 @@ class Controller:
                 getNext()
     
     def getNext(self):
-        got_next = False
         if heading is None:
             got_next = False
             while not got_next:
