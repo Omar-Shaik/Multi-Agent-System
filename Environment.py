@@ -66,8 +66,7 @@ class Environment:
     def validPosition(self, position):
         validity = True
 
-        if position[0] >= self.x_upper or position[0] <= self.x_lower or position[1] >= self.y_upper or position[
-            1] <= self.y_lower:
+        if position[0] >= self.x_upper or position[0] <= self.x_lower or position[1] >= self.y_upper or position[1] <= self.y_lower:
             validity = False
 
         if validity:
@@ -96,7 +95,7 @@ class Environment:
             if self.distance(body, t) <= 10:
                 if body.target_type == t.target_type:
                     self.targets.remove(t)
-                    body.Controller.collected += 1
+                    body.controller.collected += 1
 
                 else:
                     visible.append(t)
@@ -107,6 +106,4 @@ class Environment:
             # Returns euclidean distance between two objects: o1 and o2
 
     def distance(self, o1, o2):
-        return math.sqrt((o1.position[0] - o2.position[0]) ** 2 + (o1.position[1] - o2.position1) ** 2) 
-
-    
+        return math.sqrt((o1.position[0] - o2.position[0]) ** 2 + (o1.position[1] - o2.position[1]) ** 2)
