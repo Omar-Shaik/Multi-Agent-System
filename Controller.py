@@ -20,6 +20,8 @@ class Controller:
             if new_mov == 1:
                 self.body.move(next_mov)
                 moved = True
+                if self.body.position == self.heading:
+                    self.heading = None
             else:
                 getNext()
     
