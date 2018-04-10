@@ -1,4 +1,5 @@
 import Environment
+import matplotlib.pyplot as plt
 
 class MultiAgentSystem:
     def __init__(self, scenario, x_lower, y_lower, length, height, number_of_agents, targets_per_agent):
@@ -11,11 +12,29 @@ class MultiAgentSystem:
     def startSystem(self):
         done = 0
         while done < self.number_of_agents:
-            done = 0
+
+            self.showEnvironment()
             
+            for a in self.env.agents:
+                a.search()
+                self.showEnvironment()
+
+            done = 0
             for a in self.env.agents:
                 if a.controller.stop:
                     done += 1
+            i = 0
 
-            for a in self.env.agents:
-                a.search()
+    def showEnvironment(self):
+        agent_x = []
+        agent_y = []
+        target_x = []
+        target_y = []
+
+        for a in self.env.agents:
+            agent_x.append(a.body.position[0])
+            agent_y.append(a.body.position[1])
+
+        for t in self.env.targets:
+            target_x.append(t.body.position[0])
+            target_y.append(t.body.position[1])
