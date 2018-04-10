@@ -39,7 +39,7 @@ class Controller:
                 else:
                     if self.env.validPosition([self.body.position[0] + self.left[0], self.body.position[1] + self.left[1]):
                         self.next_mov = self.left
-            else self.heading[1] - self.body.position[1] != 0:
+            else:
                 if self.heading[1] - self.body.position[1] > 0:
                     if self.env.validPosition([self.body.position[0] + self.up[0], self.body.position[1] + self.up[1]):
                         self.next_mov = self.up
