@@ -32,4 +32,4 @@ class CommunicationChannel:
             # Sends message to all controllers in the access list except the sender
             for agent in self.access_list:
                 if agent != sender:
-                    agent.new_messages.append(message)
+                    agent.controller.new_messages.append(message)
