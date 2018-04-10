@@ -69,47 +69,58 @@ class Controller:
 
 
 class Competitive_Controller(Controller):
-    def __init__(self, body, env):
-        Controller.__init__(self, body, env)
-       
-    def readMessages(self):
-        for i in new_messages:
-            if i[0] == "head":
-                headings.append(i[1])
-            else:
-                self.stop = True
+	def __init__(self, body, env):
+        	Controller.__init__(self, body, env)
+
+	def readMessages(self):
+        	for i in new_messages:
+            		if i[0] == "head":
+                		headings.append(i[1])
+            		else:
+                		self.stop = True
 		
     def scan(self):
-        visible = self.env.objectsAround(self)
-       
-        for i in visible:
-           
-  
+    	visible = self.env.objectsAround(self)
 
+                        
+     
 class Collaborative_Controller(Controller):
-        def __init__(self, body, env):
-    	    Controller.__init__(self, body, env)
-       
-       
-		def readMessages(self):
-   		    for i in new_messages:
-    		    if i[0] == "head":
-          		    headings.append(i[1])
-      	
-    		
-		def scan(self):
-    	    visible = self.env.objectsAround(self) 
+	def __init__(self, body, env):
+    	Controller.__init__(self, body, env)
 
+	def readMessages(self):
+    	for i in new_messages:
+        	if i[0] == "head":
+            	headings.append(i[1])
+      	
+											   
+	def scan(self):
+    	visible = self.env.objectsAround(self)
+        	if self.collected < self.number_of_targets:
+            	self.stop = True 
+                    
+        for i in visible:
+        		self.channels[i.object_type].sendMessage(self, ["Head", i.position])
 
 
 class Compassionate_Controller(Controller):
-		def __init__(self, body, env):
-    	    Controller.__init__(self, body, env)
+	def __init__(self, body, env):
+    	Controller.__init__(self, body, env)
     
     
-		def readMessages(self):
-    	    for i in new_messages:
-        	    if i[0] == "head":
-            	    headings.append(i[1])
-        		else:
-            	    self.stop = True
+	def readMessages(self):
+    	for i in new_messages:
+        	if i[0] == "head":
+            	headings.append(i[1])
+        	else:
+            	self.stop = True
+                
+    
+	def scan(self):
+    	visible = self.env.objectsAround(self)
+      		if self.collected < self.number_of_targets:
+        		self.stop = True 
+          	
+		for i in visible:
+        	self.channels[i.object_type].sendMessage(self, ["Head", i.position] )
+ 
