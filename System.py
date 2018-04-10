@@ -14,7 +14,7 @@ class MultiAgentSystem:
             done = 0
             
             for a in self.env.agents:
-                if a.stop:
+                if a.controller.stop:
                     done += 1
 
             for a in self.env.agents:
