@@ -1,15 +1,22 @@
-import Environment 
-import Agent 
+import Environment
+import Agent
+
 
 class MultiAgentSystem:
-
-    def __int__(self, scenario, x_upper, x_lower, y_upper, y_lower, number_of_agents, targets_per_agent):
+    def __init__(self, scenario, x_lower, y_lower, length, height, number_of_agents, targets_per_agent):
 
         self.scenarios = ["Competitive", "Compassionate", "Collaborative"]
-        self.scenario_type = self.scenarios.index(scenario) 
-        self.environment = Environment.Environment(x_upper, x_lower, y_upper, y_lower)
-        self.environment.populate(number_of_agents, targets_per_agent)
-        
-        
+        self.scenario_type = self.scenarios.index(scenario)
+        self.env = Environment.Environment(x_lower, y_lower, length, height, number_of_agents, targets_per_agent, scenario)
+        self.number_of_agents = number_of_agents
+
     def startSystem(self):
-        #simulate
+        done = 0
+        while done < self.number_of_agents:
+            done = 0
+        for a in self.env.agents:
+            if a.stop == True:
+                done += 1
+
+        for a in self.env.agents:
+            a.search() 
