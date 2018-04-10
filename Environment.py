@@ -72,7 +72,7 @@ class Environment:
 
         if validity:
             for t in self.targets:
-                if t.pos[0] == position[0] and t.pos[1] == position[1]:
+                if t.position[0] == position[0] and t.position[1] == position[1]:
                     validity = False
 
         return validity
@@ -107,6 +107,6 @@ class Environment:
             # Returns euclidean distance between two objects: o1 and o2
 
     def distance(self, o1, o2):
-        return math.sqrt((o1.pos[0] - o2.pos[0]) ** 2 + (o1.pos[1] - o2.pos[1]) ** 2)
+        return math.sqrt((o1.position[0] - o2.position[0]) ** 2 + (o1.position[1] - o2.position1) ** 2) 
 
     
