@@ -14,5 +14,5 @@ class Agent:
         self.body.controller = self.controller
     
     
-    def search():
+    def search(self):
         self.controller.goToNext()
