@@ -12,9 +12,10 @@ class MultiAgentSystem:
         done = 0
         while done < self.number_of_agents:
             done = 0
-        for a in self.env.agents:
-            if a.stop:
-                done += 1
+            
+            for a in self.env.agents:
+                if a.stop:
+                    done += 1
 
-        for a in self.env.agents:
-            a.search()
+            for a in self.env.agents:
+                a.search()
