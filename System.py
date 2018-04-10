@@ -6,7 +6,7 @@ class MultiAgentSystem:
     def __init__(self, scenario, x_lower, y_lower, length, height, number_of_agents, targets_per_agent):
 
         self.scenarios = ["Competitive", "Compassionate", "Collaborative"]
-        self.scenario_type = self.scenarios.index(scenario)
+        self.scenario_type = self.scenarios[scenario]
         self.env = Environment.Environment(x_lower, y_lower, length, height, number_of_agents, targets_per_agent, scenario)
         self.number_of_agents = number_of_agents
 
