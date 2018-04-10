@@ -4,7 +4,7 @@ class Object:
     # Target type associates agents with targets.
 
     def __init__(self, x, y, obj_type, tar_type):
-        self.pos = [x, y]
+        self.position = [x, y]
         self.object_type = obj_type
         self.target_type = tar_type
 
@@ -19,10 +19,10 @@ class Body(Object):
 
     # Move 1 unit in the given direction, if valid
     def move(self, movement):
-        self.old_pos = self.pos
-        self.pos[0] += movement[0]
-        self.pos[1] += movement[1]
-        if self.old_pos != self.pos:
+        self.old_position = self.position
+        self.position[0] += movement[0]
+        self.position[1] += movement[1]
+        if self.old_position != self.position:
             self.controller.steps += 1
 
             # Returns a list of objects within radar range of body
@@ -34,4 +34,3 @@ class Body(Object):
 class Target(Object):
     def __init__(self, x, y, tar_type):
         Object.__init__(self, x, y, 0, tar_type)
-
