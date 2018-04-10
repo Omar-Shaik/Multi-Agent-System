@@ -14,6 +14,8 @@ class Object:
 
 # Adds move and scan functions to object subclass.
 class Body(Object):
+    controller = None
+    
     def __init__(self, x, y, tar_type):
         Object.__init__(self, x, y, 1, tar_type)
 
@@ -23,7 +25,7 @@ class Body(Object):
         self.pos[0] += movement[0]
         self.pos[1] += movement[1]
         if self.old_pos != self.pos:
-            self.
+            self.controller.steps += 1
 
     # Returns a list of objects within radar range of body
 
