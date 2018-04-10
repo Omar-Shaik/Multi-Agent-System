@@ -43,7 +43,7 @@ class Controller:
             while not got_next:
                 pos = [self.body.position[0] + random.randint(0, 1), self.body.position[1] + random.randint(0, 1)]
                 got_next = self.environment.validPosition(pos)
-                mov = [pos[0] - self.body.position[0], pos[1] - self.body.position[1]
+                mov = [pos[0] - self.body.position[0], pos[1] - self.body.position[1]]
             self.steer(mov)
         else:
             got_next = False
