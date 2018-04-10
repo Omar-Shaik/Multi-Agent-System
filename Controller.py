@@ -12,6 +12,7 @@ class Controller:
         self.headings = []
         self.new_mov = 0
         self.next_mov = None
+	self.steps = 0
         self.stop = False
 	self.channels = {}
 
