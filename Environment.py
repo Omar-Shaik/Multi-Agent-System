@@ -22,7 +22,7 @@ class Environment:
         self.public_channel = Communication.CommunicationChannel(0)
         for i in range(number_of_agents):
             found_space = False
-
+        
             while not found_space:
                 position = [random.randint(self.x_lower, self.x_upper), random.randint(self.y_lower, self.y_upper)]
                 found_space = self.validPosition(position)
@@ -30,7 +30,7 @@ class Environment:
             self.public_channel.addAccess(agent)
             agent.controller.channels.append(self.public_channel)
             self.agents.append(agent)
-
+        
             for j in range(targets_per_agent):
                 found_space = False
                 while not found_space:
@@ -38,6 +38,19 @@ class Environment:
                     found_space = self.validPosition(position)
                 target = Object.Target(position[0], position[1], self.target_types[i])
                 self.targets.append(target)
+        i = 0
+        while i < len(agents) - 2:
+            j = i + 1
+            while j < len(agents) - 1:
+                channel = Communication.CommunicationChannel(1)
+                agent1 = agents[i]
+                agent2 = agents[j]
+                channel.addAccess(agent1)
+                agent1.controller.channels.append([agent2.body.object_type, channel])
+                channel.addAccess(agent2)
+                agent2.controller.channels.append([agent1.body.object_type, channel])
+                j += 1
+            i += 1
 
 
 # Function checks if proposed position is valid.
