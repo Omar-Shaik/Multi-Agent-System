@@ -30,7 +30,7 @@ class Environment:
                 found_space = self.validPosition(position)
             agent = Agent.Agent(self, position[0], position[1], self.target_types[i], controller_type, targets_per_agent)
             self.public_channel.addAccess(agent)
-            agent.controller.channels.append(self.public_channel)
+            agent.controller.channels["Public"] =self.public_channel
             self.agents.append(agent)
 
             for j in range(targets_per_agent):
