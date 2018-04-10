@@ -1,6 +1,4 @@
 import Environment
-import Agent
-
 
 class MultiAgentSystem:
     def __init__(self, scenario, x_lower, y_lower, length, height, number_of_agents, targets_per_agent):
@@ -15,7 +13,7 @@ class MultiAgentSystem:
         while done < self.number_of_agents:
             done = 0
         for a in self.env.agents:
-            if a.stop == True:
+            if a.stop:
                 done += 1
 
         for a in self.env.agents:
