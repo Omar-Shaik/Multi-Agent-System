@@ -19,8 +19,11 @@ class Body(Object):
 
     # Move 1 unit in the given direction, if valid
     def move(self, movement):
+        self.old_pos = self.pos
         self.pos[0] += movement[0]
         self.pos[1] += movement[1]
+        if self.old_pos != self.pos:
+            self.
 
     # Returns a list of objects within radar range of body
 
