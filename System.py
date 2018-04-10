@@ -16,7 +16,9 @@ class MultiAgentSystem:
             self.showEnvironment()
             
             for a in self.env.agents:
+                a.controller.readMessages()
                 a.search()
+                a.controller.scan()
                 self.showEnvironment()
 
             done = 0
