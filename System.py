@@ -60,8 +60,9 @@ class MultiAgentSystem:
                 if a.controller.stop:
                     done += 1
                     print (done)
-            i = 0
-
+     
+            target_x = []
+            target_y = []
             for a in self.env.agents:
                 agent_x.append(a.body.position[0])
                 agent_y.append(a.body.position[1])
