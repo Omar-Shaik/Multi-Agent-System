@@ -4,7 +4,6 @@ class CommunicationChannel:
     # The access list holds all agents that have access to the channel.
     # The message log holds all previous messages.
 
-
     def __init__(self, type):
         self.channel_type = type
         self.access_list = []
@@ -27,6 +26,6 @@ class CommunicationChannel:
             # Adds message to message log
             self.message_log.append(message)
             # Sends message to all controllers in the access list except the sender
-            for agent in self.access_list:
-                if agent != sender:
-                    agent.controller.new_messages.append(message)
+            for c in self.access_list:
+                if c != sender:
+                    c.new_messages.append(message)

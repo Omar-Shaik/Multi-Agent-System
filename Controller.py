@@ -7,10 +7,10 @@ class Controller:
         self.body.controller = self
         self.collected = 0
         self.stay = [0, 0]
-        self.up = [0, 1]
-        self.right = [1, 0]
-        self.down = [0, -1]
-        self.left = [-1, 0]
+        self.up = [0, 10]
+        self.right = [10, 0]
+        self.down = [0, -10]
+        self.left = [-10, 0]
         self.headings = []
         self.new_mov = 0
         self.next_mov = None
@@ -90,17 +90,19 @@ class Collaborative_Controller(Controller):
         Controller.__init__(self, body, env)
 
     def readMessages(self):
-        for i in self.body.new_messages:
+        for i in self.new_messages:
             if i[0] == "head":
                 self.headings.append(i[1])
 
     def scan(self):
         visible = self.environment.objectsAround(self.body, True)
-        if self.collected < self.environment.number_of_targets:
+        if self.collected == self.environment.number_of_targets:
             self.stop = True
 
-        for i in self.environment.visible:
-            self.channels[i.object_type].sendMessage(self, ["Head", i.position])
+        for i in visible:
+            #print self.channels
+            self.channels[i.target_type].sendMessage(self, ["Head", i.position])
+        #print(self.collected)
 
 
 class Compassionate_Controller(Controller):
@@ -120,4 +122,4 @@ class Compassionate_Controller(Controller):
             self.stop = True
 
         for i in visible:
-            self.channels[i.object_type].sendMessage(self, ["Head", i.position])
+            self.channels[i.target_type].sendMessage(self, ["Head", i.position])

@@ -18,6 +18,7 @@ class Environment:
         self.y_upper = y_lower + height
         self.target_types = list(string.ascii_uppercase)
         self.number_of_agents = number_of_agents
+        self.number_of_targets = number_of_agents*targets_per_agent
         self.agents = []
         self.targets = []
         self.public_channel = Communication.CommunicationChannel(0)
@@ -28,7 +29,7 @@ class Environment:
             while not found_space:
                 position = [random.randint(self.x_lower, self.x_upper), random.randint(self.y_lower, self.y_upper)]
                 found_space = self.validPosition(position)
-            agent = Agent.Agent(self, position[0], position[1], self.target_types[i], controller_type, targets_per_agent)
+            agent = Agent.Agent(self, position[0], position[1], self.target_types[i], controller_type)
             self.public_channel.addAccess(agent)
             agent.controller.channels["Public"] =self.public_channel
             self.agents.append(agent)
@@ -41,16 +42,16 @@ class Environment:
                 target = Object.Target(position[0], position[1], self.target_types[i])
                 self.targets.append(target)
         i = 0
-        while i < len(self.agents) - 2:
+        while i < len(self.agents) - 1:
             j = i + 1
-            while j < len(self.agents) - 1:
+            while j < len(self.agents):
                 channel = Communication.CommunicationChannel(1)
                 agent1 = self.agents[i]
                 agent2 = self.agents[j]
                 channel.addAccess(agent1)
-                agent1.controller.channels[agent2.body.object_type] = channel
+                agent1.controller.channels[agent2.body.target_type] = channel
                 channel.addAccess(agent2)
-                agent2.controller.channels[agent1.body.object_type] = channel
+                agent2.controller.channels[agent1.body.target_type] = channel
                 j += 1
             i += 1
 

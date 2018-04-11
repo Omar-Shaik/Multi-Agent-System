@@ -8,8 +8,9 @@ class Object:
         self.object_type = obj_type
         self.target_type = tar_type
 
+        # This class creates an object instance with a value of 1 for the object type.
 
-# This class creates an object instance with a value of 1 for the object type.
+
 # Adds move and scan functions to object subclass.
 class Body(Object):
     controller = None
@@ -19,13 +20,13 @@ class Body(Object):
 
     # Move 1 unit in the given direction, if valid
     def move(self, movement):
-        self.old_position = self.position
+        self.old_pos = self.position
         self.position[0] += movement[0]
         self.position[1] += movement[1]
-        if self.old_position != self.position:
+        if self.old_pos != self.position:
             self.controller.steps += 1
 
-            # Returns a list of objects within radar range of body
+    # Returns a list of objects within radar range of body
 
 
 # This class just creates an object instance with a value of 0 for the object type.
