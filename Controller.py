@@ -34,7 +34,7 @@ class Controller:
             while not moved:
                 if self.new_mov == 1:
                     self.last_pos.append(self.body.position)
-                    if len(self.last_pos) == 101:
+                    if len(self.last_pos) == 8:
                         del self.last_pos[0]
                     self.body.move(self.next_mov)
                     self.new_mov = 0
