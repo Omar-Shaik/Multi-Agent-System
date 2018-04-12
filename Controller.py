@@ -34,10 +34,9 @@ class Controller:
             while not moved:
                 if self.new_mov == 1:
                     self.last_pos.append(self.body.position)
-                    if len(self.last_pos) == 22:
+                    if len(self.last_pos) == 101:
                         del self.last_pos[0]
                     self.body.move(self.next_mov)
-                    print self.next_mov
                     self.new_mov = 0
                     moved = True
                     if self.body.position in self.headings:
@@ -73,7 +72,6 @@ class Controller:
                     self.steer(self.left)
                     got_next = True
             if not got_next:
-                print "4"
                 if self.headings[0][1] - self.body.position[1] > 0 and can_go_up:
                     self.steer(self.up)
                 elif self.headings[0][1] - self.body.position[1] < 0 and can_go_down:
@@ -88,13 +86,20 @@ class Competitive_Controller(Controller):
 
     def readMessages(self):
         for i in self.new_messages:
-            if i[0] == "head":
+            if i[0] == "Head":
                 self.headings.append(i[1])
-            else:
+            elif i[0] == "Done":
                 self.stop = True
 
     def scan(self):
         visible = self.environment.objectsAround(self.body, False)
+        if self.collected == self.environment.targets_per_agent:
+            self.stop = True
+            self.environment.public_channel.sendMessage(self, ["Done", self.body.target_type])
+        if visible:
+            print "Haha, I know where these are."
+            for i in visible:
+                print i.target_type
 
 
 class Collaborative_Controller(Controller):
@@ -111,6 +116,7 @@ class Collaborative_Controller(Controller):
         visible = self.environment.objectsAround(self.body, True)
         if self.collected == self.environment.targets_per_agent:
             self.stop = True
+            self.environment.public_channel.sendMessage(self, ["Done", self.body.target_type])
 
         for i in visible:
             if i.position not in self.other_targets:
@@ -128,17 +134,18 @@ class Compassionate_Controller(Controller):
         for i in self.new_messages:
             if i[0] == "Head":
                 self.headings.append(i[1])
-        else:
-            self.stop = True
+                self.new_messages.remove(i)
+            elif i[0] == "Done":
+                self.stop = True
 
     def scan(self):
         visible = self.environment.objectsAround(self.body, True)
         if self.collected == self.environment.targets_per_agent:
             self.stop = True
+            self.environment.public_channel.sendMessage(self, ["Done", self.body.target_type])
 
         for i in visible:
             if i.position not in self.other_targets:
                 self.other_targets.append(i.position)
                 message = ["Head", i.position]
                 self.channels[i.target_type].sendMessage(self, message)
-                print message
