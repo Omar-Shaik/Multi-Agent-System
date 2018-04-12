@@ -28,7 +28,6 @@ class MultiAgentSystem:
                 a.controller.scan()
                 a.controller.readMessages()
                 a.search()
-                a.controller.scan()
                 # self.showEnvironment()
 
             done = 0
