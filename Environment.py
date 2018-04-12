@@ -11,13 +11,15 @@ class Environment:
     # Populates an environment with the number of agents and number of targets per agent specified.
     # Found space variable makes sure it's safe to add the randomly generated agent. Only becomes true when position is valid.
 
-    def __init__(self, x_lower, y_lower, length, height, number_of_agents, targets_per_agent, controller_type):
+    def __init__(self, x_lower, y_lower, width, height, number_of_agents, targets_per_agent, controller_type):
         self.x_lower = x_lower
         self.y_lower = y_lower
-        self.x_upper = x_lower + length
+        self.x_upper = x_lower + width
         self.y_upper = y_lower + height
         self.target_types = list(string.ascii_uppercase)
         self.number_of_agents = number_of_agents
+        self.targets_per_agent = targets_per_agent
+        self.number_of_targets = number_of_agents * targets_per_agent
         self.agents = []
         self.targets = []
         self.public_channel = Communication.CommunicationChannel(0)
@@ -27,9 +29,9 @@ class Environment:
 
             while not found_space:
                 position = [random.randint(self.x_lower, self.x_upper), random.randint(self.y_lower, self.y_upper)]
-                found_space = self.validPosition(position)
-            agent = Agent.Agent(self, position[0], position[1], self.target_types[i], controller_type, targets_per_agent)
-            self.public_channel.addAccess(agent)
+                found_space = self.validPosition(position, True)
+            agent = Agent.Agent(self, position[0], position[1], self.target_types[i], controller_type)
+            self.public_channel.addAccess(agent.controller)
             agent.controller.channels["Public"] =self.public_channel
             self.agents.append(agent)
 
@@ -37,20 +39,20 @@ class Environment:
                 found_space = False
                 while not found_space:
                     position = [random.randint(self.x_lower, self.x_upper), random.randint(self.y_lower, self.y_upper)]
-                    found_space = self.validPosition(position)
+                    found_space = self.validPosition(position, False)
                 target = Object.Target(position[0], position[1], self.target_types[i])
                 self.targets.append(target)
         i = 0
-        while i < len(self.agents) - 2:
+        while i < len(self.agents) - 1:
             j = i + 1
-            while j < len(self.agents) - 1:
+            while j < len(self.agents):
                 channel = Communication.CommunicationChannel(1)
                 agent1 = self.agents[i]
                 agent2 = self.agents[j]
-                channel.addAccess(agent1)
-                agent1.controller.channels[agent2.body.object_type] = channel
-                channel.addAccess(agent2)
-                agent2.controller.channels[agent1.body.object_type] = channel
+                channel.addAccess(agent1.controller)
+                agent1.controller.channels[agent2.body.target_type] = channel
+                channel.addAccess(agent2.controller)
+                agent2.controller.channels[agent1.body.target_type] = channel
                 j += 1
             i += 1
 
@@ -63,27 +65,27 @@ class Environment:
             # Third if statement within second checks if that position is currently occupied.
             # Third if statement also makes sure that two agents don't get too close to one another. Their radars cannot overlap, meaning 20cm.
 
-    def validPosition(self, position):
+    def validPosition(self, position, if_controller):
         validity = True
 
         if position[0] >= self.x_upper or position[0] <= self.x_lower or position[1] >= self.y_upper or position[1] <= self.y_lower:
             validity = False
 
         if validity:
-            for t in self.targets:
-                if t.position[0] == position[0] and t.position[1] == position[1]:
+            i = 0
+            while validity and i < len(self.targets):
+                if self.targets[i].position[0] == position[0] and self.targets[i].position[1] == position[1]:
                     validity = False
+                i += 1
 
+        """ if if_controller and validity:
+            i = 0
+            while validity and i < len(self.agents):
+                if self.distance(self.agents[i].body.position, position) < 20 and self.distance(self.agents[i].body.position, position)  > math.sqrt(2):
+                    validity = False
+                i += 1"""
+        
         return validity
-
-    def colisionAvoidance(self, controller):
-        for a in self.agents:
-            if self.distance(a, controller.body) < 20:
-                return False
-            else:
-                return True
-
-
 
                 # Returns a list of elements visible to the body.
                 # Removes targets that have the same target type as the body from the environment if they are within radar range.
@@ -91,19 +93,22 @@ class Environment:
     def objectsAround(self, body, need_visible):
         visible = []
 
-        for t in self.targets:
-            if self.distance(body, t) <= 10:
-                if body.target_type == t.target_type:
-                    self.targets.remove(t)
+        i = len(self.targets) - 1
+        while i >= 0:
+            if self.distance(body.position, self.targets[i].position) <= 10:
+                if body.target_type == self.targets[i].target_type:
+                    del self.targets[i]
                     body.controller.collected += 1
-
                 else:
-                    visible.append(t)
+                    visible.append(self.targets[i])
+            i -= 1
 
         if need_visible:
             return visible
+        else:
+            return []
 
             # Returns euclidean distance between two objects: o1 and o2
 
-    def distance(self, o1, o2):
-        return math.sqrt((o1.position[0] - o2.position[0]) ** 2 + (o1.position[1] - o2.position[1]) ** 2)
+    def distance(self, pos1, pos2):
+        return math.hypot(pos2[0] - pos1[0], pos2[1] - pos1[1])
