@@ -30,3 +30,5 @@ class CommunicationChannel:
             for c in self.access_list:
                 if c != sender:
                     c.new_messages.append(message)
+        if self.channel_type == 0:
+            print message 
