@@ -14,10 +14,12 @@ class Controller:
         self.headings = []
         self.new_mov = 0
         self.next_mov = None
+        self.last_pos = []
         self.steps = 0
         self.stop = False
         self.channels = {}
         self.new_messages = []
+        self.other_targets = []
 
     def steer(self, dir):
         self.next_mov = dir
@@ -26,11 +28,17 @@ class Controller:
     def goToNext(self):
         if self.stop:
             self.steer(self.stay)
+
         else:
             moved = False
             while not moved:
                 if self.new_mov == 1:
+                    self.last_pos.append(self.body.position)
+                    if len(self.last_pos) == 22:
+                        del self.last_pos[0]
                     self.body.move(self.next_mov)
+                    print self.next_mov
+                    self.new_mov = 0
                     moved = True
                     if self.body.position in self.headings:
                         self.headings.remove(self.body.position)
@@ -42,32 +50,36 @@ class Controller:
             got_next = False
             mov = None
             while not got_next:
-                pos = [self.body.position[0] + random.randint(0, 1), self.body.position[1] + random.randint(0, 1)]
-                got_next = self.environment.validPosition(pos)
-                mov = [pos[0] - self.body.position[0], pos[1] - self.body.position[1]]
+                x = random.randint(-1, 1)
+                y = random.randint(-1, 1)
+                mov = [x, y]
+                pos = [self.body.position[0] + mov[0], self.body.position[1] + mov[1]]
+                got_next = self.environment.validPosition(pos, True)
+                if got_next and pos in self.last_pos:
+                    got_next = False
             self.steer(mov)
         else:
             got_next = False
+            can_go_up = self.environment.validPosition([self.body.position[0] + self.up[0], self.body.position[1] + self.up[1]], True)
+            can_go_right = self.environment.validPosition([self.body.position[0] + self.right[0], self.body.position[1] + self.right[1]], True)
+            can_go_down = self.environment.validPosition([self.body.position[0] + self.down[0], self.body.position[1] + self.down[1]], True)
+            can_go_left = self.environment.validPosition([self.body.position[0] + self.left[0], self.body.position[1] + self.left[1]], True)
+
             if self.headings[0][0] - self.body.position[0] != 0:
-                if self.headings[0][0] - self.body.position[0] > 0:
-                    if self.environment.validPosition([self.body.position[0] + self.right[0], self.body.position[1] + self.right[1]]):
-                        self.steer(self.right)
-                        got_next = True
-                else:
-                    if self.environment.validPosition([self.body.position[0] + self.left[0], self.body.position[1] + self.left[1]]):
-                        self.steer(self.left)
-                        got_next = True
+                if self.headings[0][0] - self.body.position[0] > 0 and can_go_right:
+                    self.steer(self.right)
+                    got_next = True
+                elif self.headings[0][0] - self.body.position[0] < 0 and can_go_left:
+                    self.steer(self.left)
+                    got_next = True
             if not got_next:
-                if self.headings[0][1] - self.body.position[1] > 0:
-                    if self.environment.validPosition([self.body.position[0] + self.up[0], self.body.position[1] + self.up[1]]):
-                        self.steer(self.up)
-                    else:
-                        self.steer(self.stay)
+                print "4"
+                if self.headings[0][1] - self.body.position[1] > 0 and can_go_up:
+                    self.steer(self.up)
+                elif self.headings[0][1] - self.body.position[1] < 0 and can_go_down:
+                    self.steer(self.down)
                 else:
-                    if self.environment.validPosition([self.body.position[0] + self.down[0], self.body.position[1] + self.down[1]]):
-                        self.steer(self.down)
-                    else:
-                        self.steer(self.stay)
+                    self.steer(self.stay)
 
 
 class Competitive_Controller(Controller):
@@ -90,17 +102,22 @@ class Collaborative_Controller(Controller):
         Controller.__init__(self, body, env)
 
     def readMessages(self):
-        for i in self.body.new_messages:
-            if i[0] == "head":
+        for i in self.new_messages:
+            if i[0] == "Head":
                 self.headings.append(i[1])
+                self.new_messages.remove(i)
 
     def scan(self):
         visible = self.environment.objectsAround(self.body, True)
-        if self.collected < self.environment.number_of_targets:
+        if self.collected == self.environment.targets_per_agent:
             self.stop = True
 
-        for i in self.environment.visible:
-            self.channels[i.object_type].sendMessage(self, ["Head", i.position])
+        for i in visible:
+            if i.position not in self.other_targets:
+                self.other_targets.append(i.position)
+                message = ["Head", i.position]
+                self.channels[i.target_type].sendMessage(self, message)
+                print message
 
 
 class Compassionate_Controller(Controller):
@@ -108,16 +125,20 @@ class Compassionate_Controller(Controller):
         Controller.__init__(self, body, env)
 
     def readMessages(self):
-        for i in self.body.new_messages:
-            if i[0] == "head":
+        for i in self.new_messages:
+            if i[0] == "Head":
                 self.headings.append(i[1])
         else:
             self.stop = True
 
     def scan(self):
         visible = self.environment.objectsAround(self.body, True)
-        if self.collected < self.environment.number_of_targets:
+        if self.collected == self.environment.targets_per_agent:
             self.stop = True
 
         for i in visible:
-            self.channels[i.object_type].sendMessage(self, ["Head", i.position])
+            if i.position not in self.other_targets:
+                self.other_targets.append(i.position)
+                message = ["Head", i.position]
+                self.channels[i.target_type].sendMessage(self, message)
+                print message
