@@ -5,7 +5,11 @@ class Controller:
         self.environment = env
         self.body = body
         self.body.controller = self
-        self.collected = 0
+        self.c = 0.0
+        self.d = 0.0
+        self.e = 0.0
+        self.f = 0.0
+        self.k = 0.0
         self.stay = [0, 0]
         self.up = [0, 1]
         self.right = [1, 0]
@@ -14,12 +18,14 @@ class Controller:
         self.headings = []
         self.new_mov = 0
         self.next_mov = None
-        self.last_pos = []
+        self.last_mov = []
         self.steps = 0
         self.stop = False
         self.channels = {}
         self.new_messages = []
         self.other_targets = []
+        self.last_ran = None
+        self.ran_count = 0
 
     def steer(self, dir):
         self.next_mov = dir
@@ -33,9 +39,9 @@ class Controller:
             moved = False
             while not moved:
                 if self.new_mov == 1:
-                    self.last_pos.append(self.body.position)
-                    if len(self.last_pos) == 8:
-                        del self.last_pos[0]
+                    self.last_mov.append(self.body.position)
+                    if len(self.last_mov) == 8:
+                        del self.last_mov[0]
                     self.body.move(self.next_mov)
                     self.new_mov = 0
                     moved = True
@@ -54,7 +60,7 @@ class Controller:
                 mov = [x, y]
                 pos = [self.body.position[0] + mov[0], self.body.position[1] + mov[1]]
                 got_next = self.environment.validPosition(pos, True)
-                if got_next and pos in self.last_pos:
+                if got_next and pos in self.last_mov:
                     got_next = False
             self.steer(mov)
         else:
@@ -93,7 +99,7 @@ class Competitive_Controller(Controller):
 
     def scan(self):
         visible = self.environment.objectsAround(self.body, False)
-        if self.collected == self.environment.targets_per_agent:
+        if self.d == self.environment.targets_per_agent:
             self.stop = True
             self.environment.public_channel.sendMessage(self, ["Done", self.body.target_type])
         if visible:
@@ -114,7 +120,7 @@ class Collaborative_Controller(Controller):
 
     def scan(self):
         visible = self.environment.objectsAround(self.body, True)
-        if self.collected == self.environment.targets_per_agent:
+        if self.d == self.environment.targets_per_agent:
             self.stop = True
             self.environment.public_channel.sendMessage(self, ["Done", self.body.target_type])
 
@@ -140,7 +146,7 @@ class Compassionate_Controller(Controller):
 
     def scan(self):
         visible = self.environment.objectsAround(self.body, True)
-        if self.collected == self.environment.targets_per_agent:
+        if self.d == self.environment.targets_per_agent:
             self.stop = True
             self.environment.public_channel.sendMessage(self, ["Done", self.body.target_type])
 
@@ -149,3 +155,4 @@ class Compassionate_Controller(Controller):
                 self.other_targets.append(i.position)
                 message = ["Head", i.position]
                 self.channels[i.target_type].sendMessage(self, message)
+
