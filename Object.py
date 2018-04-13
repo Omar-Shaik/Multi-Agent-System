@@ -35,3 +35,4 @@ class Target(Object):
     def __init__(self, x, y, tar_type):
         Object.__init__(self, x, y, 0, tar_type)
 
+
