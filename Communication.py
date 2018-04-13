@@ -31,4 +31,4 @@ class CommunicationChannel:
                 if c != sender:
                     c.new_messages.append(message)
         if self.channel_type == 0:
-            print message 
+            print message
