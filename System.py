@@ -1,7 +1,8 @@
 import Environment
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-import time
+import math
+import csv
 
 
 class MultiAgentSystem:
@@ -9,32 +10,83 @@ class MultiAgentSystem:
 
         self.scenarios = ["Competitive", "Compassionate", "Collaborative"]
         self.scenario_type = self.scenarios[scenario]
-        self.env = Environment.Environment(x_lower, y_lower, length, height, number_of_agents, targets_per_agent,
-                                           scenario)
+        self.env = Environment.Environment(x_lower, y_lower, length, height, number_of_agents, targets_per_agent, scenario)
         self.number_of_agents = number_of_agents
+        self.a = scenario + 1
+        self.b = 1
+        self.g = 0
+        self.h = 0
+        self.i = 0
+        self.j = 0
+
+    def updateStatVar(self):
+        self.updateAgentHappiness()
+        self.updateMaxHappiness()
+        self.updateMinHappiness()
+        self.updateAverageHappiness()
+        self.updateStdDevHappiness()
+        self.updateAgentCompetitiveness()
+
+    def updateAgentHappiness(self):
+        for agt in self.env.agents:
+            agt.f = agt.controller.d / (agt.controller.e + 1)
+
+    def updateMaxHappiness(self):
+        self.g = 0
+        for agt in self.env.agents:
+            if agt.controller.f > self.g:
+                self.g = agt.controller.f
+
+    def updateMinHappiness(self):
+        self.h = self.env.agents[0].controller.f
+        for agt in self.env.agents:
+            if agt.controller.f < self.h:
+                self.h = agt.controller.f
+
+    def updateAverageHappiness(self):
+        self.i = 0
+        for agt in self.env.agents:
+            self.i += agt.controller.f
+        self.i /= self.number_of_agents
+
+    def updateStdDevHappiness(self):
+        self.j = 0
+        for agt in self.env.agents:
+            self.j += (agt.controller.f - self.i) ** 2
+        self.j = math.sqrt(self.j / self.number_of_agents)
+
+    def updateAgentCompetitiveness(self):
+        for agt in self.env.agents:
+            agt.controller.k = (agt.controller.f - self.h) / (self.g - self.h)
 
     def startSystem(self):
         done = 0
-
         agent_x = []
         agent_y = []
         target_x = []
         target_y = []
         fig = plt.figure()
+        csv_row = []
+        fig = plt.figure()
+        firstFile = open('G21_1.csv', 'w')
+        secondFile = open('G21_2.csv', 'w')
 
         while done < self.number_of_agents:
 
-            for a in self.env.agents:
-                a.controller.scan()
-                a.controller.readMessages()
-                a.search()
-                # self.showEnvironment()
+            for agt in self.env.agents:
+                agt.controller.scan()
+                agt.controller.readMessages()
+                agt.search()
+                self.updateStatVar()
+                row = [self.a, self.b, agt.controller.c, agt.controller.d, agt.controller.e, agt.controller.f, self.h, self.h, self.i, self.j, agt.controller.k]
+                csv_row.append(row)
 
             done = 0
             for a in self.env.agents:
                 if a.controller.stop:
                     done += 1
-                    print (done)
+
+            self.b +=1
 
             agent_x = []
             agent_y = []
@@ -68,3 +120,7 @@ class MultiAgentSystem:
             plt.show(block=False)
             plt.pause(0.01)
             ax.cla()
+
+        with firstFile:
+            writer = csv.writer(firstFile)
+            writer.writerows(csv_row)
