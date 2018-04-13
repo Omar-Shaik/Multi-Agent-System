@@ -32,7 +32,7 @@ class Environment:
                 found_space = self.validPosition(position, True)
             agent = Agent.Agent(self, position[0], position[1], self.target_types[i], controller_type)
             self.public_channel.addAccess(agent.controller)
-            agent.controller.channels["Public"] =self.public_channel
+            agent.controller.channels["Public"] = self.public_channel
             self.agents.append(agent)
 
             for j in range(targets_per_agent):
@@ -68,27 +68,28 @@ class Environment:
     def validPosition(self, position, if_controller):
         validity = True
 
-        if position[0] >= self.x_upper or position[0] <= self.x_lower or position[1] >= self.y_upper or position[1] <= self.y_lower:
+        if position[0] >= self.x_upper or position[0] <= self.x_lower or position[1] >= self.y_upper or position[
+            1] <= self.y_lower:
             validity = False
 
-        if validity:
+        """if validity:
             i = 0
             while validity and i < len(self.targets):
                 if self.targets[i].position[0] == position[0] and self.targets[i].position[1] == position[1]:
                     validity = False
-                i += 1
+                i += 1"""
 
-        """ if if_controller and validity:
+        """if if_controller and validity:
             i = 0
             while validity and i < len(self.agents):
                 if self.distance(self.agents[i].body.position, position) < 20 and self.distance(self.agents[i].body.position, position)  > math.sqrt(2):
                     validity = False
                 i += 1"""
-        
+
         return validity
 
-                # Returns a list of elements visible to the body.
-                # Removes targets that have the same target type as the body from the environment if they are within radar range.
+        # Returns a list of elements visible to the body.
+        # Removes targets that have the same target type as the body from the environment if they are within radar range.
 
     def objectsAround(self, body, need_visible):
         visible = []
@@ -98,7 +99,7 @@ class Environment:
             if self.distance(body.position, self.targets[i].position) <= 10:
                 if body.target_type == self.targets[i].target_type:
                     del self.targets[i]
-                    body.controller.collected += 1
+                    body.controller.d += 1
                 else:
                     visible.append(self.targets[i])
             i -= 1
